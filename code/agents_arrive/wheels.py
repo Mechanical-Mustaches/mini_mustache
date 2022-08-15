@@ -20,3 +20,6 @@ class Wheels(mm.Agent):
         
         self.louie.set(0)
         self.roger.set(0)
+        
+    def check(self):
+        pass
