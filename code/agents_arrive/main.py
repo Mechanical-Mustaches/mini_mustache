@@ -1,21 +1,26 @@
-from machine import Pin
+import mechanical_mustaches as mm
+from mechanical_mustaches import m
+from machine import Pin, ADC
 import wheels, neo
 import utime
 from machine import Pin
 import uasyncio as asyncio
+import config
 
+knob = mm.Knob(config.port_C['A'])
+ 
+A = mm.Button(17)
+B = mm.Button(5)
+C = mm.Button(18)
+D = mm.Button(config.port_B['D'])
 
-A = Pin(17, Pin.IN)
-B = Pin(5, Pin.IN)
-C = Pin(18, Pin.IN)
-
-timmy = mm.Timer()
-archie = mm.Autonomous()
-wally = wheels.Wheels(name='wally')
-nemo = neo.Neo(name='nemo', pin=15, num_pix=5)
-lefty = mm.Servo(name='lefty', pin=21)
-righty = mm.Servo(name='righty', pin=19)
-utime.sleep_ms(10)
+# timmy = mm.Timer()
+# archie = mm.Autonomous()
+wally = wheels.Wheels(**config.wally)
+# nemo = neo.Neo(name='nemo', pin=15, num_pix=5)
+lefty = mm.Servo(pin=config.port_A['C'], name='lefty')
+righty = mm.Servo(pin=config.port_A['D'], name='righty')
+# utime.sleep_ms(10)
 
 
 # def stache(numb):
@@ -84,6 +89,11 @@ utime.sleep_ms(10)
 
 # while True:
 #     asyncio.run(main())
+
+while True:
+    lefty.set(knob.read())
+    righty.set(knob.read())
+    utime.sleep_ms(20)
 
 
 

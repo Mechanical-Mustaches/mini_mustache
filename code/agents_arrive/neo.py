@@ -7,7 +7,7 @@ class Neo(mm.Agent):
     
     rbow = tuple([int((math.sin(math.pi / 18 * i) * 127 + 128) / 10) for i in range(36)])
     
-    def __init__(self, pin, num_pix, name):
+    def __init__(self, pin, num_pix, name='nemo'):
         super().__init__(name)
         self.name = name
         pixels = Pin(pin, Pin.OUT)

@@ -5,7 +5,7 @@ import utime
 
 class Servo:
     # range is 70 --> 650
-    def __init__(self, name: str, pin: int, *, freq:int=250, _min:int= 70, _max:int= 650):
+    def __init__(self, pin: int, *, freq:int=250, _min:int= 70, _max:int= 650, name='servo'):
         self.name = name
         self.pin = PWM(Pin(pin), freq=freq)
         self.min = _min
