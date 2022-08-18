@@ -24,7 +24,7 @@ class Neo(mm.Agent):
         self.neo.write()
      
             
-    def chk(self):
+    def check(self):
         for i in range(self.num_pix):
             index = (self.r_idx + i*2) % 36
             self.neo[i] = (self.rbow[index], self.rbow[(index + 12)%36], self.rbow[(index + 24)%36])

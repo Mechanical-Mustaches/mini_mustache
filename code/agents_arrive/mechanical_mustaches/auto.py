@@ -1,17 +1,20 @@
+from mechanical_mustaches.timer import Timer
+
 """
 Archie is a super villian trying to take over tele-op
 He is a slow virus that works with most of the agents
 He also works in his main lair autonomous
 """
 
-class Autonomous:
+class Auto:
     def __init__(self, *, name='archie', mode='auto'):
         self.name = name
         print(f" {name} IS MY NAME")
         self.bookmark = 0
         self.book = []
         self.running = False
-        self.mode = mode  # 'single_shot' or 'auto'
+        self.mode = mode  # 'single_shot' or 'auto',
+        self.timer = Timer()
 
 
     def check(self):
@@ -37,8 +40,11 @@ class Autonomous:
 
 
 
-    def run(self, new_book: list[any]):
+    def run(self, new_book: list[any], *kwargs):
         self.book = new_book
         self.bookmark = 0
-        self.check()
         self.running = True
+        if kwargs:
+            if kwargs['start'] == False:
+                return
+        self.check()
