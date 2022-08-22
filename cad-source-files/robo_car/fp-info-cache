@@ -1,4 +1,4 @@
-19852629745484493
+20021183037479406
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -44940,6 +44940,13 @@ USB_A Female Connector receptacle
 6
 5
 Connector_USB
+USB_A_THRU_HOLE_Horizontal
+
+
+0
+6
+5
+Connector_USB
 USB_A_Wuerth_614004134726_Horizontal
 USB A connector https://www.we-online.com/catalog/datasheet/614004134726.pdf
 USB_A Female Connector receptacle
@@ -58190,6 +58197,13 @@ mounting hole 8.4mm m8
 0
 9
 1
+MountingHole
+drilled_0_3
+
+
+0
+0
+0
 Mounting_Wuerth
 Mounting_Wuerth_WA-SMSE-ExternalM3_H5mm_9771050360
 Mounting Hardware, external M3, height 5, Wuerth electronics 9771050360 (https://katalog.we-online.com/em/datasheet/9771050360.pdf), generated with kicad-footprint-generator
@@ -78463,6 +78477,13 @@ Logo KiCad
 0
 0
 Symbol
+Mustache20mm
+
+
+0
+0
+0
+Symbol
 OSHW-Logo2_7.3x6mm_Copper
 Open Source Hardware Symbol
 Logo Symbol OSHW
@@ -79114,7 +79135,21 @@ mechanical_mustache_20mm_painted
 0
 0
 Symbol
+mechanical_mustache_22mm
+
+
+0
+0
+0
+Symbol
 mechanical_mustache_25mm_painted
+
+
+0
+0
+0
+Symbol
+mechanical_mustache_30
 
 
 0
@@ -84594,24 +84629,3 @@ varistor SIOV
 0
 2
 2
-evezor_uncategorized
-DRV8825
-
-
-0
-16
-16
-evezor_uncategorized
-QR_READER_YJD600
-
-
-0
-0
-0
-evezor_uncategorized
-REGULATOR_VOLTAGE_811-2622-ND
-
-
-0
-5
-5
