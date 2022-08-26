@@ -29,10 +29,14 @@ wiggles = [
     lambda: timmy.reset(),
     lambda: timmy.read() > 4,
     lambda: lefty.set(0),
-    lambda: righty.set(0)
+    lambda: righty.set(0),
+    lambda: m.retire('mr_wiggles'),
+    lambda: m.change_state('disabled')
     ]
 
-m.add_auto(wiggles)
+
+
+
 
 
 class Robot:
@@ -41,7 +45,8 @@ class Robot:
     
     
     def autonomousInit(self):
-        pass
+        m.add_auto(wiggles, name='mr_wiggles')
+        # pass
     
     
     async def autonomousPeriodic(self):
@@ -82,7 +87,8 @@ class Robot:
     
     async def disabledPeriodic(self):
         pass    
-        
+        if A.read():
+            m.change_state('auto')
 
         
         

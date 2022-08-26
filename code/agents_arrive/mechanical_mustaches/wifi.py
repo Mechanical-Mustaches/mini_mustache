@@ -1,13 +1,3 @@
-print('running __init__')
-from mechanical_mustaches.motor import Motor
-from mechanical_mustaches.servo import Servo
-from mechanical_mustaches.agent import Agent, m
-from mechanical_mustaches.timer import Timer
-from mechanical_mustaches.auto import Auto
-from mechanical_mustaches.button import Button
-from mechanical_mustaches.knob import Knob
-# import mechanical_mustaches.wifi as wifi
-
 import network
 import utime
 
@@ -37,3 +27,18 @@ def connect(*args):
         my_ip = ap.ifconfig()[0]
         print('my ip address is: ', my_ip)
 
+
+
+# import machine
+# id =machine.unique_id()
+# print(id)
+# letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
+# 
+# 
+# for letter in id:
+#     print(type(letter))
+#     print(byteletter, end=' ')
+#     if letter.encode('utf8') in letters:
+#         print(letter)
+#     else:
+#         print('m')

@@ -38,9 +38,9 @@ class Auto:
         ''' Finishing a book: Ending the function, no more task left to do in the certain book'''
         
 
+ 
 
-
-    def run(self, new_book: list[any], *kwargs):
+    def run(self, new_book: list[any], **kwargs):
         self.book = new_book
         self.bookmark = 0
         self.running = True

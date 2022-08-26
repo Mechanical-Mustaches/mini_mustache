@@ -43,7 +43,7 @@ class CEO:
     def __init__(self, name):
         self.name = name
         self.agents = {}
-        self.state = 'teleop'
+        self.state = 'disabled' # auto, test, disabled
         self.autos = []
 
     def talk(self):
@@ -62,6 +62,11 @@ class CEO:
         for agent in self.agents.values():
             agent.test()
             await asyncio.sleep_ms(0)
+    
+    async def auto_check(self):
+        for auto in self.autos:
+            auto.check()
+        await asyncio.sleep_ms(0)
             
     def run(self, robot):
         self.robot = robot
@@ -71,14 +76,45 @@ class CEO:
                 
     async def loop(self):
         while True:
-            if self.state == 'teleop':
+            if self.state == 'teleop':  # auto, test, disabled
                 await self.robot.teleopPeriodic()
+            elif self.state == 'auto':
+                await self.robot.autonomousPeriodic()
+            elif self.state == 'test':
+                await self.robot.testPeriodic()
+            elif self.state == 'disabled':
+                await self.robot.disabledPeriodic()
             await asyncio.sleep_ms(20)
+            
                 
     def add_auto(self, playbook: list, **kwargs):
         archie = Auto(**kwargs)
         self.autos.append(archie)
         archie.run(playbook, start=False)
+        
+        
+    def retire(self, target):
+        print(f"I'm sorry {target} it is time to die!")
+        for i in range(len(self.autos)):
+            if self.autos[i].name == target:
+                self.autos.remove(i)
+        
+        
+    def change_state(self, state):
+        print(f'changing state to {state}')
+        if state == 'disabled':
+            self.robot.disabledInit()
+        elif state == 'auto':
+            self.autos.clear()
+            self.robot.autonomousInit()
+        elif state == 'test':
+            self.robot.testInit()
+        elif state == 'teleop':
+            self.robot.teleopInit()
+        
+        self.state = state
+        
+        
 
 #     def rez(self):
 #         for agent in self.agents.values():
