@@ -1,4 +1,4 @@
-20021183037479406
+20027829575436738
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -78484,6 +78484,13 @@ Mustache20mm
 0
 0
 Symbol
+MustacheSS
+
+
+0
+0
+0
+Symbol
 OSHW-Logo2_7.3x6mm_Copper
 Open Source Hardware Symbol
 Logo Symbol OSHW
@@ -78862,6 +78869,20 @@ Logo RoHS
 0
 0
 Symbol
+Smiley
+
+
+0
+0
+0
+Symbol
+Squiggly
+
+
+0
+0
+0
+Symbol
 Symbol_Attention_CopperTop_Big
 Symbol, Attention, Copper Top, Big,
 Symbol, Attention, Copper Top, Big,
@@ -79150,6 +79171,13 @@ mechanical_mustache_25mm_painted
 0
 Symbol
 mechanical_mustache_30
+
+
+0
+0
+0
+Symbol
+stache_station
 
 
 0
