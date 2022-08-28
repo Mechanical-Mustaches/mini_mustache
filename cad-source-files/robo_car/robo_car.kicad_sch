@@ -3187,22 +3187,6 @@
     (pin "1" (uuid 1f84c3df-cdf4-4a7c-ad4b-0b74c8f25446))
   )
 
-  (symbol (lib_id "power:VBUS") (at 394.97 170.18 90) (unit 1)
-    (in_bom yes) (on_board yes)
-    (uuid 00000000-0000-0000-0000-000060c4783e)
-    (property "Reference" "#PWR0112" (id 0) (at 398.78 170.18 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "VBUS" (id 1) (at 389.89 170.18 90))
-    (property "Footprint" "" (id 2) (at 394.97 170.18 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (id 3) (at 394.97 170.18 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid a99e0d17-3970-49fd-b75e-cafde44e6bd0))
-  )
-
   (symbol (lib_id "Device:R_Small") (at 378.46 78.74 180) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000060c8a627)
@@ -5254,9 +5238,6 @@
     )
     (path "/00000000-0000-0000-0000-00005f380014"
       (reference "#PWR0110") (unit 1) (value "GND") (footprint "")
-    )
-    (path "/00000000-0000-0000-0000-000060c4783e"
-      (reference "#PWR0112") (unit 1) (value "VBUS") (footprint "")
     )
     (path "/00000000-0000-0000-0000-00006092222d"
       (reference "#PWR0113") (unit 1) (value "+3.3V") (footprint "")
