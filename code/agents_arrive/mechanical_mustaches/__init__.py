@@ -6,14 +6,15 @@ from mechanical_mustaches.timer import Timer
 from mechanical_mustaches.auto import Auto
 from mechanical_mustaches.button import Button
 from mechanical_mustaches.knob import Knob
-# import mechanical_mustaches.wifi as wifi
+import mechanical_mustaches.wifi as wifi
+
 
 import network
 import utime
 
 my_ip = None
 
-def connect(*args):
+def wifi_connect(*args):
     global my_ip
     if args:
         _ssid, password = args
@@ -36,4 +37,6 @@ def connect(*args):
         ap.active(True)         # activate the interface
         my_ip = ap.ifconfig()[0]
         print('my ip address is: ', my_ip)
-
+    print('doing imports')
+    
+    

@@ -38,7 +38,6 @@ wiggles = [
 
 
 
-
 class Robot:
     def __init__(self):
         pass
@@ -86,9 +85,12 @@ class Robot:
     
     
     async def disabledPeriodic(self):
-        pass    
+#         pass
+        nemo.rainbow()
         if A.read():
             m.change_state('auto')
+        
+        
 
         
         

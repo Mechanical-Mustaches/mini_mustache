@@ -14,6 +14,7 @@ class Neo(mm.Agent):
         self.neo = NeoPixel(pixels, num_pix)
         self.num_pix = num_pix
         self.r_idx = 0
+        self.state = 'sleeping' #rainbow, 
         
     def fill(self, r, g, b):
         """
@@ -25,11 +26,22 @@ class Neo(mm.Agent):
      
             
     def check(self):
+        if self.state == 'sleeping':
+            self.sleeping()
+    
+    
+    def off(self):
+        self.fill(0, 0, 0)
+        
+    
+    def sleeping(self):
+        self.rainbow()
+    
+    
+    def rainbow(self):
         for i in range(self.num_pix):
             index = (self.r_idx + i*2) % 36
             self.neo[i] = (self.rbow[index], self.rbow[(index + 12)%36], self.rbow[(index + 24)%36])
         self.neo.write()
         self.r_idx = (self.r_idx + 1) % 36
-                
-    def off(self):
-        self.fill(0, 0, 0)
+        
