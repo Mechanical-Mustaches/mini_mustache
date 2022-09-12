@@ -78,12 +78,16 @@ class CEO:
         while True:
             if self.state == 'teleop':  # auto, test, disabled
                 await self.robot.teleopPeriodic()
+                await self.robot.robotPeriodic()
             elif self.state == 'auto':
                 await self.robot.autonomousPeriodic()
+                await self.robot.robotPeriodic()
             elif self.state == 'test':
                 await self.robot.testPeriodic()
+                await self.robot.robotPeriodic()
             elif self.state == 'disabled':
                 await self.robot.disabledPeriodic()
+                await self.robot.robotPeriodic()
             await asyncio.sleep_ms(20)
             
                 

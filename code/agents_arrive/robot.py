@@ -1,7 +1,7 @@
 import mechanical_mustaches as mm
 from mechanical_mustaches import m
 from machine import Pin, ADC
-import wheels, neo
+from agents import wheels, neo
 import config
 import uasyncio as asyncio
 
