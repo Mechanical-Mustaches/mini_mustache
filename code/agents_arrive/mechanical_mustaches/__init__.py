@@ -11,8 +11,6 @@ import mechanical_mustaches.wifi as wifi
 
 import network
 import utime
-import machine
-import utime
 
 my_ip = None
 
@@ -32,14 +30,10 @@ def wifi_connect(*args):
         my_ip = wlan.ifconfig()[0]
         print('my ip adress is: ', my_ip)
     else:
-        letters = "ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789"
-        id = list(machine.unique_id())
-        ap_name = 'mustache-' + ''.join([letters[l % len(letters)] for l in id])
         print('creating access point')
         ap = network.WLAN(network.AP_IF) # create access-point interface
         # print(dir(ap.config))
-        utime.sleep_ms(500)
-        ap.config(essid=ap_name) # set the SSID of the access point
+        ap.config(essid='evezor') # set the SSID of the access point
         ap.active(True)         # activate the interface
         my_ip = ap.ifconfig()[0]
         print('my ip address is: ', my_ip)

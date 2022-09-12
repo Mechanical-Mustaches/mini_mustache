@@ -28,7 +28,6 @@ class Neo(mm.Agent):
     def check(self):
         if self.state == 'sleeping':
             self.sleeping()
-        
     
     
     def off(self):
