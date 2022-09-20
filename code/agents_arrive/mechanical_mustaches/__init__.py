@@ -6,7 +6,7 @@ from mechanical_mustaches.timer import Timer
 from mechanical_mustaches.auto import Auto
 from mechanical_mustaches.button import Button
 from mechanical_mustaches.knob import Knob
-import mechanical_mustaches.wifi as wifi
+#import mechanical_mustaches.wifi as wifi
 
 
 import network
@@ -38,8 +38,9 @@ def wifi_connect(*args):
         print('creating access point', ap_name)
         ap = network.WLAN(network.AP_IF) # create access-point interface
         # print(dir(ap.config))
+        utime.sleep_ms(1500)
         ap.config(essid=ap_name) # set the SSID of the access point
-        utime.sleep_ms(500)
+        utime.sleep_ms(1500)
         ap.active(True)         # activate the interface
         my_ip = ap.ifconfig()[0]
         print('my ip address is: ', my_ip)

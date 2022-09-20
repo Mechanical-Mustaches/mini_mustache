@@ -4,7 +4,11 @@ import mechanical_mustaches.web.picoweb as picoweb
 import mechanical_mustaches.web.ulogging as logging
 import json
 import esp32
+import uasyncio 
 logging.basicConfig(level=logging.INFO)
+
+
+
 
 
 
@@ -28,7 +32,7 @@ def process(form):
         if k =='button':
             funcs[v]()
 
-@site.route("/")
+# @site.route("/")
 def index(req, resp):
     if req.method == "POST":
         yield from req.read_form_data()
@@ -50,12 +54,13 @@ def index(req, resp):
   margin-right: auto; width: 300px;
   border: 5px outset #2E8B57; background-color: lightblue; text-align: center;}</style>
   <script>
-var source = new EventSource("cnc/events");
+var source = new EventSource("events");
 source.onmessage = function(event) {
     var load = JSON.parse(event.data);
     console.log(load);
     document.getElementById("temp").innerHTML = load.temp;
     document.getElementById("count").innerHTML = load.count;
+    document.getElementById("m_state").innerHTML = load.m_state;
 }
 source.onerror = function(error) {
     console.log(error);
@@ -65,10 +70,10 @@ source.onerror = function(error) {
     </head>
     <body>
     <h1>Mo's Mayhem</h1>
-    <h3>machine status: </h3><br>
+   
 <strong>
 Count: <div class="myDiv" id="count"></div>
-Status: <div class="myDiv" id="status"></div>
+M.state: <div class="myDiv" id="m_state"></div>
 Position: <div class="myDiv" id="position"></div>
 Temp: <div class="myDiv" id="temp"></div></strong>
 <br>
@@ -90,7 +95,8 @@ def events(req, resp):
     try:
         while True:
             load = {"count": i,
-                    "temp": esp32.raw_temperature()}
+                    "temp": esp32.raw_temperature(),
+                    "m_state": m.state}
             load = "data: {}\n\n".format(json.dumps(load))
             yield from resp.awrite(load)
             yield from uasyncio.sleep(.5)
@@ -100,12 +106,12 @@ def events(req, resp):
         yield from resp.aclose()
 
 
-
-site = picoweb.WebApp(__name__, ROUTES)
-
 ROUTES = [
     ("/", index),
     ("/events", events),
 ]
+
+site = picoweb.WebApp(__name__, ROUTES)
+
 site.run(debug=1, port=80, host=mm.my_ip)
 
