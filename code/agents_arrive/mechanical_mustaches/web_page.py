@@ -6,14 +6,12 @@ import json
 import esp32
 import uasyncio
 import agents.stache_board
-
 logging.basicConfig(level=logging.INFO)
 
 import mechanical_mustaches.web.repl as repl
 
 m.find_outputs()
 m.make_rez()
-
 
 def create_webpage():
     page = ["""
@@ -37,27 +35,26 @@ def create_webpage():
         document.getElementById("count").innerHTML = load.count;
         document.getElementById("m_state").innerHTML = load.m_state;
         """,
-            ''.join([f'document.getElementById("{name}").innerHTML = load.{name};' for name, _ in m.the_rez]),
-            """}
-            source.onerror = function(error) {
-                console.log(error);
-                document.getElementById("result").innerHTML += "EventSource error:" + error + "<br>";
-            }
-            </script>
-                </head>
-                <body>
-                <a href="/repl"><button class="button grey">repl</button></a>
-                <h1>Mo's Stache'board<br>dashboard</h1>
+    ''.join([f'document.getElementById("{name}").innerHTML = load.{name};' for name, _ in m.the_rez]),
+    """}
+    source.onerror = function(error) {
+        console.log(error);
+        document.getElementById("result").innerHTML += "EventSource error:" + error + "<br>";
+    }
+    </script>
+        </head>
+        <body>
+        <a href="/repl"><button class="button grey">repl</button></a>
+        <h1>Mo's Stache'board<br>dashboard</h1>
         
-        
-            <strong>
-            Count: <div class="myDiv" id="count"></div>
-            M.state: <div class="myDiv" id="m_state"></div>
-            Temp: <div class="myDiv" id="temp"></div>""",
-            ''.join([f'{name.replace("_", ".")}: <div class="myDiv" id="{name}"></div>' for name, _ in m.the_rez]),
-            "<br><br></strong><p>"]
-    return ''.join(page)
 
+    <strong>
+    Count: <div class="myDiv" id="count"></div>
+    M.state: <div class="myDiv" id="m_state"></div>
+    Temp: <div class="myDiv" id="temp"></div>""",
+    ''.join([f'{name.replace("_", ".")}: <div class="myDiv" id="{name}"></div>' for name, _ in m.the_rez]),
+    "<br><br></strong><p>"]
+    return ''.join(page)
 
 page = create_webpage()
 
@@ -68,26 +65,24 @@ funcs = {
     'auto': lambda: m.change_state('auto'),
     'teleop': lambda: m.change_state('teleop'),
     'test': lambda: m.change_state('test')
-}
+    }
 
 
 def button(func, color, location):
     return f'<a href="/?button_{location}={func}"><button class="button {color}">{func}</button></a>'
 
-
 def process(form):
     for k, v in form.items():
-        if k == 'button_m':
+        if k =='button_m':
             funcs[v]()
-        if k == 'button_stache':
+        if k =='button_stache':
             agents.stache_board.buttons[v]()
-
 
 # @site.route("/")
 def index(req, resp):
     if req.method == "POST":
         yield from req.read_form_data()
-    else:  # must be GET
+    else: # must be GET
         req.parse_qs()
     print('printing form data', req.form)
     process(req.form)
@@ -99,6 +94,7 @@ def index(req, resp):
     for butt in agents.stache_board.buttons:
         yield from resp.awrite(button(butt, 'grey', 'stache'))
     yield from resp.awrite('</p></html>')
+    
 
 
 def events(req, resp):
@@ -130,5 +126,4 @@ ROUTES = [
 site = picoweb.WebApp(__name__, ROUTES)
 site.mount('/repl', repl.app)
 site.run(debug=1, port=80, host=mm.my_ip)
-
 

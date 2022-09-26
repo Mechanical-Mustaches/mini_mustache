@@ -12,12 +12,12 @@ nemo = neo.Neo(name='nemo', pin=15, num_pix=5)
 lefty = mm.Servo(pin=config.port_A['C'], name='lefty')
 righty = mm.Servo(pin=config.port_A['D'], name='righty')
 
-A = mm.Button(17)
-B = mm.Button(5)
-C = mm.Button(18)
-D = mm.Button(config.port_B['D'])
-
-knob = mm.Knob(config.port_C['A'])
+# A = mm.Button(17)
+# B = mm.Button(5)
+# C = mm.Button(18)
+# D = mm.Button(config.port_B['D'])
+# 
+# knob = mm.Knob(config.port_C['A'])
 
 wiggles = [
     lambda: lefty.set(.8),
@@ -44,8 +44,8 @@ class Robot:
     
     
     def autonomousInit(self):
-        m.add_auto(wiggles, name='mr_wiggles')
-        # pass
+        # m.add_auto(wiggles, name='mr_wiggles')
+        pass
     
     
     async def autonomousPeriodic(self):
@@ -61,7 +61,8 @@ class Robot:
     
     
     def testInit(self):
-        pass
+        nemo.sleep()
+#        pass
     
     
     async def testPeriodic(self):
@@ -76,19 +77,20 @@ class Robot:
     
     async def teleopPeriodic(self):
         await m.check()
-        lefty.set(knob.read())
-        righty.set(knob.read())
+#         lefty.set(knob.read())
+#         righty.set(knob.read())
         
         
     def disabledInit(self):
-        pass
+        nemo.rainbow() 
+#       pass
     
     
     async def disabledPeriodic(self):
 #         pass
-        nemo.rainbow()
-        if A.read():
-            m.change_state('auto')
+        nemo.check()
+#         if A.read():
+#             m.change_state('auto')
         
         
 

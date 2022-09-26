@@ -19,8 +19,7 @@ def run_it(form):
     return f'''
 >>> {form['code']}<br>
 {_return}
-'''
-
+'''    
 
 @app.route("/")
 def index(req, resp):
@@ -37,12 +36,11 @@ def index(req, resp):
         repl: <input name='code' />
         <input type='submit' value='enter'></form><br>
         """)
-
+    
     yield from resp.awrite(run_it(req.form))
     yield from resp.awrite('<br><br><br><a href="/"><button>home</button></a><br>')
     yield from resp.awrite(b"<img src='mechanical_mustaches/web/static/mm_logo.png'></img><br>")
     yield from resp.awrite(b"<img src='mechanical_mustaches/web/static/FIRST_Horz_RGB.png'></img><br></body><html>")
-
 
 
 

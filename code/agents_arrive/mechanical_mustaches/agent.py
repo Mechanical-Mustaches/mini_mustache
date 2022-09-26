@@ -30,9 +30,9 @@ class Agent:
 
     def __call__(self, *args):
         if not args:
-            print(f"ring ring hello this is {self.name}, who's there")
+            return f"ring ring hello this is {self.name}, who's there"
         else:
-            print(f'so thoughtful you brought me a {args[0]}')
+            return f'so thoughtful you brought me a {args[0]}'
 
     def __repr__(self):
         return f'OG_{self.name}'
@@ -76,6 +76,8 @@ class CEO:
         # self.find_outputs()
         # self.make_rez()
         self.robot = robot
+        self.robot.robotInit()
+        self.robot.disabledInit()
         loop = asyncio.get_event_loop()
         loop.create_task(self.loop())
         loop.run_forever()

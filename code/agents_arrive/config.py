@@ -18,7 +18,7 @@ wally = {
 stache_station = {
     'hbt_led': 27,
     'function': 36,
-    'neo_statis': 14
+    'neo_status': 14
     }
 
 port_A = {

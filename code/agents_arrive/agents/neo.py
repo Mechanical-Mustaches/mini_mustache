@@ -28,18 +28,24 @@ class Neo(mm.Agent):
     def check(self):
         if self.state == 'sleeping':
             self.sleeping()
+        if self.state == 'rainbowing':
+            self.rainbowing()
         
-    
-    
     def off(self):
         self.fill(0, 0, 0)
         
+    def sleep(self):
+        self.off()
+        self.state = 'sleeping' 
     
     def sleeping(self):
-        self.rainbow()
-    
-    
+        pass
+        # self.rainbow()
+        
     def rainbow(self):
+        self.state = 'rainbowing'
+    
+    def rainbowing(self):
         for i in range(self.num_pix):
             index = (self.r_idx + i*2) % 36
             self.neo[i] = (self.rbow[index], self.rbow[(index + 12)%36], self.rbow[(index + 24)%36])
