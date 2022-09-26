@@ -49,3 +49,6 @@ class Motor:
         else:
             self.f.duty(0)
             self.r.duty(0)
+
+    def rez(self):
+        return f'f:{self.f.duty()}, r:{self.r.duty()}'

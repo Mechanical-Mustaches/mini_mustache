@@ -8,8 +8,7 @@ class Wheels(mm.Agent):
         self.name = name
         self.louie = mm.Motor(**louie)
         self.roger = mm.Motor(**roger)
-
-        print("{} has rolledddddddd on in".format(self.name))   
+        print("{} has rolledddddddd on in".format(self.name))
 
     def move(self, left, right):
         

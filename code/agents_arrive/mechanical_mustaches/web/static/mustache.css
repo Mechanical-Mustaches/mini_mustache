@@ -1,0 +1,6 @@
+html{background-color: #5391F8; font-family: Helvetica; display:inline-block; margin: 0px auto; text-align: center;}
+      h1{color: #ffffff; padding: 2vh;}p{font-size: 1.5rem;}.button{display: inline-block; background-color: #e7bd3b; border: none;
+      border-radius: 4px; color: white; padding: 16px 40px; text-decoration: none; font-size: 30px; margin: 2px; cursor: pointer;}
+      .pink{background-color: #EEA2F4;}.grey{background-color: #B6B6B6;}.button4{background-color: #eb3440;}.myDiv{display: block;margin-left: auto;
+      margin-right: auto; width: 300px;
+      border: 5px outset #2E8B57; background-color: lightblue; text-align: center;}

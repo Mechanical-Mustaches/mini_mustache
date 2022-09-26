@@ -92,7 +92,7 @@ class WebApp:
         else:
             self.pkg = None
         if serve_static:
-            self.url_map.append((re.compile("^/(static/.+)"), self.handle_static))
+            self.url_map.append((re.compile("^/(mechanical_mustaches/web/static/.+)"), self.handle_static))
         self.mounts = []
         self.inited = False
         # Instantiated lazily
@@ -274,11 +274,12 @@ class WebApp:
         if not content_type:
             content_type = get_mime_type(fname)
         try:
-            with pkg_resources.resource_stream(self.pkg, fname) as f:
+            with mechanical_mustaches.web.pkg_resources.resource_stream(self.pkg, fname) as f:
                 yield from start_response(writer, content_type, "200", headers)
                 yield from sendstream(writer, f)
         except OSError as e:
             if e.args[0] == uerrno.ENOENT:
+                yield from http_error(writer, "404")
                 yield from http_error(writer, "404")
             else:
                 raise
