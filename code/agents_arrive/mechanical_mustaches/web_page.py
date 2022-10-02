@@ -23,7 +23,7 @@ def create_webpage():
             <style>html{background-color: #0e1ce3; font-family: Helvetica; display:inline-block; margin: 0px auto; text-align: center;}
       h1{color: #ffffff;}h2{color: #ffffff;}p{font-size: 1.5rem;}.button{display: inline-block; background-color: #e7bd3b; border: none;
       border-radius: 4px; color: white; padding: 16px 40px; text-decoration: none; font-size: 30px; margin: 2px; cursor: pointer;}
-      .pink{background-color: #ff0dba;}.grey{background-color: #707070;}.button4{background-color: #eb3440;}.myDiv{display: block;margin-left: auto;
+      .pink{background-color: #ff0dba;}.grey{background-color: #707070;}.button4{background-color: #eb3440;}.stch_brd{display: block;margin-left: auto;
       margin-right: auto; width: 300px;
       border: 5px outset #2E8B57; background-color: lightblue; text-align: center;}</style>
       <script>
@@ -49,10 +49,10 @@ def create_webpage():
         
 
     <strong>
-    Count: <div class="myDiv" id="count"></div>
-    M.state: <div class="myDiv" id="m_state"></div>
-    Temp: <div class="myDiv" id="temp"></div>""",
-    ''.join([f'{name.replace("_", ".")}: <div class="myDiv" id="{name}"></div>' for name, _ in m.the_rez]),
+    Count: <div class="stch_brd" id="count"></div>
+    M.state: <div class="stch_brd" id="m_state"></div>
+    Temp: <div class="stch_brd" id="temp"></div>""",
+    ''.join([f'{name.replace("_", ".")}: <div class="stch_brd" id="{name}"></div>' for name, _ in m.the_rez]),
     "<br><br></strong><p>"]
     return ''.join(page)
 

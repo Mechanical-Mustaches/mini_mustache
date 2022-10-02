@@ -8,9 +8,12 @@ import time
 app = picoweb.WebApp(__name__)
 
 the_runs = ''
+the_input = ''
 
-def run_it(form):
+def process(form):
     global the_runs
+    global the_input
+    the_input = ''
     if 'clear' in form: # button press
         the_runs = ''
     
@@ -18,20 +21,22 @@ def run_it(form):
         return
 
     try:
-        
-        _return = str(eval(form['code'], globals())).strip('<>')
-        print('evaling')
-        the_runs += f">>> {form['code']}<br>{_return}<br>"
+        _return = str(eval(form['code'], globals(), locals())).strip('<>')
+        the_runs += f">>> {form['code']}\n{_return}\n"
     
     except SyntaxError:
-        print('execing')
-        code = form['code'].replace('\r', '')
-        exec(compile(code , 'input', 'exec'), globals())
-        the_runs +=  f">>> {code}<br>"
+        try:
+            code = form['code'].replace('\r', '')
+            exec(compile(code , 'input', 'exec'), globals(), locals())
+            the_runs +=  f">>> {code}\n"
+        except Exception as e:
+            the_runs += f">>> {form['code']}\n{e}\n"
+            the_input = form['code']
     
     except Exception as e:
-        the_runs += f">>> {form['code']}<br>{e}<br>"
-    
+        the_runs += f">>> {form['code']}\n{e}\n"
+        the_input = form['code']
+
 
 @app.route("/")
 def index(req, resp):
@@ -39,25 +44,45 @@ def index(req, resp):
         yield from req.read_form_data()
     else:  # GET, apparently
         req.parse_qs()
-    print(req.form)
-    run_it(req.form)
+    # print(req.form)
+    process(req.form)
     yield from picoweb.start_response(resp)
-    yield from resp.awrite(f"""<html><head><style>{send_css()}</style></head><body><h1>Mo's Repl</h1><br><form action='repl' method='POST'>
-        {the_runs}<br>
-        <a href="/repl?clear"><button>clear</button></a><br>
-        <form action='/repl' method='POST'>
-        repl: <input name='code' />
-        <input type='submit' value='run'></form><br>
-        <form action="/repl" method="POST">
-        <textarea name="code" cols=40 rows=4></textarea>
-        <input type="submit" value="run\nmultiline">
-        </form>
-        """)
-    yield from resp.awrite('<br><br><br><a href="/"><button>home</button></a><br>')
+    yield from resp.awrite(f"""
+<!DOCTYPE html><html><head><style>{send_css()}</style>{script()}</head><body><h1>Mo's Repl</h1><br><form action='repl' method='POST'>
+Terminal:<br>
+<form action='/repl' method='POST'>
+<textarea name="clear" class="textarea" cols=60 rows={the_runs.count('\n') + 6} >{the_runs}</textarea>
+<input id="clear" type="submit" value="clear" class="button pink_s">
+</form>
+<br><br><br><br>
+input: <form action="/repl" method="POST" id="mline">
+<textarea class="textarea" name="code" autofocus="autofocus" cols=40 rows=4 OnKeyPress="submitOnEnter();">{the_input}</textarea>
+<input id="mline_submit" type="submit" value="run" class="button pink_s">
+</form>
+remember: python uses 4 spaces as indents, but 2 spaces will work here ;)<br>
+shift + enter for newline, enter will run code
+""")
+
+    yield from resp.awrite('<br><br><br><a href="/"><button class="button grey">home</button></a><br>')
 
 
 def send_css():
     with open('/mechanical_mustaches/web/static/mustache.css', 'r') as f:
-        return f.read()
+        return f.read().replace('\r\n', '')
     
-    
+
+def script():
+    return """<script>
+function submitOnEnter(){
+    var x = event.keycode
+    console.log(x)
+    if(event.which === 13 && !event.shiftKey){
+        event.target.form.dispatchEvent(new Event("submit", {cancelable: true}));
+        event.preventDefault();
+    }
+}
+</script>"""
+
+
+
+# <form action='/repl' method='POST'>single line: <input name='code'/><input type='submit' value='run'></form><br>
