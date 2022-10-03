@@ -10,7 +10,7 @@ class Wheels(mm.Agent):
         self.roger = mm.Motor(**roger)
         print("{} has rolledddddddd on in".format(self.name))
 
-    def move(self, left, right):
+    def tankdrive(self, left, right):
         
         self.louie.set(left)
         self.roger.set(right)
@@ -24,3 +24,20 @@ class Wheels(mm.Agent):
         pass
     
     
+    def drive(self, speed: float, turn: float):
+        """speed and turn take arguments from -1 to 1"""
+        
+        wheels = [speed + turn, speed - turn]
+        
+        for wheel in wheels:
+            if wheel > 1:
+                wheel = 1
+            if wheel < -1:
+                wheel = -1
+        
+        self.louie.set(wheels[0])
+        self.roger.set(wheels[1])
+        
+            
+        
+        

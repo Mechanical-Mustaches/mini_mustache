@@ -28,11 +28,13 @@ class Agent:
     def rez(self):
         return self.state
 
-    def __call__(self, *args):
-        if not args:
-            return f"ring ring hello this is {self.name}, who's there"
+    def __call__(self, *args, **kwargs):
+        if args:
+            return f"you want an argument, I'll tell you where you can stick your {args}"
+        elif kwargs:
+            return f"I love kwargs <3, thank you for the {kwargs}"
         else:
-            return f'so thoughtful you brought me a {args[0]}'
+            return f"ring ring hello this is {self.name}, who's there"
 
     def __repr__(self):
         return f'OG_{self.name}'

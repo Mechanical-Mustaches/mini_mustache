@@ -24,14 +24,18 @@ class Motor:
     # - Speed move backward
     def set(self, speed):
         """
-        Range is -1023 <---> 1023 for Speed
+        Range is -1 <---> 1 for Speed
         """
         if speed > 0:
-            self.f.duty(speed)  # forward pin
+            if speed > 1:
+                speed = 1
+            self.f.duty(speed * 1023)  # forward pin
             self.r.duty(0)  # reverse pin
         elif speed < 0:
+            if speed < -1:
+                speed = -1
             self.f.duty(0)
-            self.r.duty(abs(speed))
+            self.r.duty(abs(speed) * 1023)
         else:
             self.f.duty(0)
             self.r.duty(0)
