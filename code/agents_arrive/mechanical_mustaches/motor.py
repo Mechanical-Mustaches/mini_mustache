@@ -2,7 +2,7 @@ from machine import Pin, PWM
 import utime
 
 class Motor:
-    def __init__(self, f_pin, r_pin, freq, name):
+    def __init__(self, f_pin: int, r_pin: int, freq: int, name: str, inverted: bool=False):
         
         self.name = name
         self.f_pin = f_pin
@@ -10,6 +10,7 @@ class Motor:
         self.freq = freq
         self.f = PWM(Pin(f_pin), freq=freq)
         self.r = PWM(Pin(r_pin), freq=freq)
+        self.inverted = inverted
                  
         utime.sleep_ms(10)
         self.f.duty(0)
@@ -22,28 +23,29 @@ class Motor:
 
     # + Speed move forward
     # - Speed move backward
-    def set(self, speed):
+    def set(self, speed: float) -> None:
         """
         Range is -1 <---> 1 for Speed
         """
+            
         if speed > 0:
             if speed > 1:
                 speed = 1
-            self.f.duty(speed * 1023)  # forward pin
-            self.r.duty(0)  # reverse pin
+            self.set_raw(int(speed * 1023))
         elif speed < 0:
             if speed < -1:
                 speed = -1
-            self.f.duty(0)
-            self.r.duty(abs(speed) * 1023)
+            self.set_raw(int(speed * 1023))
         else:
-            self.f.duty(0)
-            self.r.duty(0)
+            self.set_raw(0)
 
-    def set_raw(self, speed):
+    def set_raw(self, speed: int) -> None:
         """
         Range is -1023 <---> 1023 for Speed
         """
+        if self.inverted:
+            speed = -speed
+            
         if speed > 0:
             self.f.duty(speed)  # forward pin
             self.r.duty(0)  # reverse pin

@@ -34,7 +34,7 @@ class Wheels(mm.Agent):
                 wheel = 1
             if wheel < -1:
                 wheel = -1
-        
+        print(wheels)
         self.louie.set(wheels[0])
         self.roger.set(wheels[1])
         

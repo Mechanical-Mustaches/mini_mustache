@@ -1,6 +1,7 @@
 import uasyncio as asyncio
 from mechanical_mustaches.auto import Auto
 import mechanical_mustaches.motor
+import config
 
 class Agent:
     """
@@ -30,7 +31,7 @@ class Agent:
 
     def __call__(self, *args, **kwargs):
         if args:
-            return f"you want an argument, I'll tell you where you can stick your {args}"
+            return f"you want an argument? I'll tell you where you can stick your {args}"
         elif kwargs:
             return f"I love kwargs <3, thank you for the {kwargs}"
         else:
@@ -46,6 +47,7 @@ class CEO:
         self.agents = {}
         self.state = 'disabled'  # auto, test, disabled
         self.autos = []
+        self.the_rez = []
 
     def talk(self):
         print(f'hello i am {self.name.upper()} nice to meet you {self.agents}')
@@ -75,8 +77,6 @@ class CEO:
         await asyncio.sleep_ms(0)
 
     def run(self, robot):
-        # self.find_outputs()
-        # self.make_rez()
         self.robot = robot
         self.robot.robotInit()
         self.robot.disabledInit()
@@ -98,6 +98,9 @@ class CEO:
             elif self.state == 'disabled':
                 await self.robot.disabledPeriodic()
                 await self.robot.robotPeriodic()
+            if not config.ss.function_button.value():
+                print('Function Button Pressed Raising KeyboardInterrupt')
+                raise KeyboardInterrupt
             await asyncio.sleep_ms(20)
 
     def add_auto(self, playbook: list, **kwargs):
@@ -126,7 +129,6 @@ class CEO:
         self.state = state
 
     def make_rez(self):
-        self.the_rez = []
         for name, agent in self.agents.items():
             self.the_rez.append([f'{name}_state', agent['self']])
             for o_name, output in agent['outputs'].items():

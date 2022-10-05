@@ -4,38 +4,49 @@
 import mechanical_mustaches
 import mechanical_mustaches.web.picoweb as picoweb
 import time
-
+import gc
 app = picoweb.WebApp(__name__)
+
+
 
 the_runs = ''
 the_input = ''
+g_imprtd = False
+
 
 def process(form):
     global the_runs
     global the_input
+    global g_imprtd
     the_input = ''
     if 'clear' in form: # button press
         the_runs = ''
     
     if 'code' not in form: # initial pageload probably
         return
-
+    
+    code = form['code']
     try:
-        _return = str(eval(form['code'], globals(), locals())).strip('<>')
-        the_runs += f">>> {form['code']}\n{_return}\n"
+        _return = str(eval(code, globals(), locals())).strip('<>')
+        the_runs += f">>> {code}\n{_return}\n"
     
     except SyntaxError:
         try:
-            code = form['code'].replace('\r', '')
-            exec(compile(code , 'input', 'exec'), globals(), locals())
+            code = code.replace('\r', '')
+            if not g_imprtd:
+                exec(compile('globals().update(locals())' , 'input', 'single'), globals(), locals())
+                g_imprtd = True
+            # _code = compile(code , '<string>', 'single')
+            exec(compile(code , 'input', 'single'), globals(), locals())
+            # exec(_code, globals(), locals())
             the_runs +=  f">>> {code}\n"
         except Exception as e:
-            the_runs += f">>> {form['code']}\n{e}\n"
-            the_input = form['code']
+            the_runs += f">>> {code}\n{e}\n"
+            the_input = code
     
     except Exception as e:
-        the_runs += f">>> {form['code']}\n{e}\n"
-        the_input = form['code']
+        the_runs += f">>> {code}\n{e}\n"
+        the_input = code
 
 
 @app.route("/")
@@ -64,7 +75,7 @@ shift + enter for newline, enter will run code
 """)
 
     yield from resp.awrite('<br><br><br><a href="/"><button class="button grey">home</button></a><br>')
-
+    gc.collect()
 
 def send_css():
     with open('/mechanical_mustaches/web/static/mustache.css', 'r') as f:

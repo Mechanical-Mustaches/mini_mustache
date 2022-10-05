@@ -6,54 +6,39 @@ import json
 import esp32
 import uasyncio
 import agents.stache_board
-logging.basicConfig(level=logging.INFO)
-
-import mechanical_mustaches.web.repl as repl
 
 m.find_outputs()
 m.make_rez()
 
+def send_css():
+    with open('/mechanical_mustaches/web/static/mustache.css', 'r') as f:
+        return f.read().replace('\r\n', '')
+
 def create_webpage():
-    page = ["""
-    <html>
-        <head>
-            <title>Mo's Mayhem</title>
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <link rel="icon" href="data:,">
-            <style>html{background-color: #0e1ce3; font-family: Helvetica; display:inline-block; margin: 0px auto; text-align: center;}
-      h1{color: #ffffff;}h2{color: #ffffff;}p{font-size: 1.5rem;}.button{display: inline-block; background-color: #e7bd3b; border: none;
-      border-radius: 4px; color: white; padding: 16px 40px; text-decoration: none; font-size: 30px; margin: 2px; cursor: pointer;}
-      .pink{background-color: #ff0dba;}.grey{background-color: #707070;}.button4{background-color: #eb3440;}.stch_brd{display: block;margin-left: auto;
-      margin-right: auto; width: 300px;
-      border: 5px outset #2E8B57; background-color: lightblue; text-align: center;}</style>
-      <script>
-    var source = new EventSource("events");
-    source.onmessage = function(event) {
-        var load = JSON.parse(event.data);
-        console.log(load);
-        document.getElementById("temp").innerHTML = load.temp;
-        document.getElementById("count").innerHTML = load.count;
-        document.getElementById("m_state").innerHTML = load.m_state;
-        """,
+    page = [f"<html><head><title>Mo's Mayhem</title><style>{send_css()}</style>",
+"""
+<script>
+var source = new EventSource("stacheboard/events");
+source.onmessage = function(event) {
+  var load = JSON.parse(event.data);
+  console.log(load);
+  document.getElementById("temp").innerHTML = load.temp;
+  document.getElementById("count").innerHTML = load.count;
+  document.getElementById("m_state").innerHTML = load.m_state;
+""",
     ''.join([f'document.getElementById("{name}").innerHTML = load.{name};' for name, _ in m.the_rez]),
     """}
     source.onerror = function(error) {
         console.log(error);
         document.getElementById("result").innerHTML += "EventSource error:" + error + "<br>";
     }
-    </script>
-        </head>
-        <body>
-        <a href="/repl"><button class="button grey">repl</button></a>
-        <h1>Mo's Stache'board<br>dashboard</h1>
-        
-
-    <strong>
+</script></head><body><br>
+<h1>Mo's Stache'board<br></h1><h3>dashboard</h3><strong>
     Count: <div class="stch_brd" id="count"></div>
     M.state: <div class="stch_brd" id="m_state"></div>
     Temp: <div class="stch_brd" id="temp"></div>""",
     ''.join([f'{name.replace("_", ".")}: <div class="stch_brd" id="{name}"></div>' for name, _ in m.the_rez]),
-    "<br><br></strong><p>"]
+    '<br><br></strong><p>']
     return ''.join(page)
 
 page = create_webpage()
@@ -69,7 +54,7 @@ funcs = {
 
 
 def button(func, color, location):
-    return f'<a href="/?button_{location}={func}"><button class="button {color}">{func}</button></a>'
+    return f'<a href="/stacheboard?button_{location}={func}"><button class="button {color}">{func}</button></a>'
 
 def process(form):
     for k, v in form.items():
@@ -93,7 +78,7 @@ def index(req, resp):
     yield from resp.awrite('<br><hr><strong>agents.stache_board.buttons</strong><br>')
     for butt in agents.stache_board.buttons:
         yield from resp.awrite(button(butt, 'grey', 'stache'))
-    yield from resp.awrite('</p></html>')
+    yield from resp.awrite('</p><br><a href="/"><button class="button pink">home</button></a></html>')
     
 
 
@@ -118,12 +103,13 @@ def events(req, resp):
         yield from resp.aclose()
 
 
+
+
 ROUTES = [
     ("/", index),
     ("/events", events),
 ]
 
-site = picoweb.WebApp(__name__, ROUTES)
-site.mount('/repl', repl.app)
-site.run(debug=1, port=80, host=mm.my_ip)
+app = picoweb.WebApp(__name__, ROUTES)
+
 

@@ -7,7 +7,7 @@ He also works in his main lair autonomous
 """
 
 class Auto:
-    def __init__(self, *, name='archie', mode='auto'):
+    def __init__(self, *, name='archie', mode='auto', loop=False):
         self.name = name
         print(f" {name} IS MY NAME")
         self.bookmark = 0
@@ -15,11 +15,11 @@ class Auto:
         self.running = False
         self.mode = mode  # 'single_shot' or 'auto',
         self.timer = Timer()
+        self.loop = loop
 
 
     def check(self):
-        func = self.book[self.bookmark]
-        returned = func()
+        returned = self.book[self.bookmark]()
         # if self.book[self.bookmark]() is False:
         if self.mode == 'auto':
             try:
@@ -29,16 +29,19 @@ class Auto:
                     self.bookmark += 1
                     self.check()
             except IndexError:
-                self.running = False
-                print('finished book')
+                if self.loop:
+                    self.bookmark = 0
+                    self.check()
+                else:
+                    self.running = False
+                    print('finished book')
             return None
         elif self.mode == 'single_shot':  # must be single shot
             self.bookmark += 1
+            if self.bookmark > len(self.book) and self.loop:
+                self.bookmark = 0
             return
-        ''' Finishing a book: Ending the function, no more task left to do in the certain book'''
         
-
- 
 
     def run(self, new_book: list[any], **kwargs):
         self.book = new_book

@@ -5,7 +5,8 @@ html{
   margin: 0px auto; 
   text-align: center;}
   
-h1{color: #ffffff; padding: 2vh;}
+h1{color: #FFFFFF; line-height: 0px;}
+h3{color: #FFFFFF;}
 p{font-size: 1.5rem;}
 .textarea{background-color: #DDDDDD;}
 .button{
