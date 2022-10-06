@@ -66,9 +66,9 @@ Terminal:<br>
 <input id="clear" type="submit" value="clear" class="button pink_s">
 </form>
 <br><br><br><br>
-input: <form action="/repl" method="POST" id="mline">
-<textarea class="textarea" name="code" autofocus="autofocus" cols=40 rows=4 OnKeyPress="submitOnEnter();">{the_input}</textarea>
-<input id="mline_submit" type="submit" value="run" class="button pink_s">
+input: <form action="/repl" method="POST" id="coder">
+<textarea class="textarea" name="code" autofocus="autofocus" cols=40 rows=4" onfocus="var temp_value=this.value; this.value=''; this.value=temp_value">{the_input}</textarea>
+<input type="submit" value="run" class="button pink_s">
 </form>
 remember: python uses 4 spaces as indents, but 2 spaces will work here ;)<br>
 shift + enter for newline, enter will run code
@@ -84,16 +84,20 @@ def send_css():
 
 def script():
     return """<script>
-function submitOnEnter(){
-    var x = event.keycode
-    console.log(x)
-    if(event.which === 13 && !event.shiftKey){
-        event.target.form.dispatchEvent(new Event("submit", {cancelable: true}));
-        event.preventDefault();
-    }
+document.addEventListener('keydown', (event) => {
+if(event.key == "Enter"  && !event.shiftKey) {
+  document.getElementById("coder").submit();\
 }
+  }, false);
 </script>"""
 
 
-
+# function submitOnEnter(){
+#     var x = event.keycode
+#     console.log(x)
+#     if(event.which === 13 && !event.shiftKey){
+#         event.target.form.dispatchEvent(new Event("submit", {cancelable: true}));
+#         event.preventDefault();
+#     }
+# }
 # <form action='/repl' method='POST'>single line: <input name='code'/><input type='submit' value='run'></form><br>
