@@ -86,7 +86,6 @@ def wifi_connect(*args):
             print('.', end='')
         print('.')
         my_ip = wlan.ifconfig()[0]
-        print('my ip adress is: ', my_ip)
     else:
         ss.fill(0,4,0)
         letters = "ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789"

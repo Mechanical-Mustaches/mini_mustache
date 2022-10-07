@@ -57,9 +57,10 @@ def index(req, resp):
         req.parse_qs()
     # print(req.form)
     process(req.form)
+    gc.collect()
     yield from picoweb.start_response(resp)
     yield from resp.awrite(f"""
-<!DOCTYPE html><html><head><style>{send_css()}</style>{script()}</head><body><h1>Mo's Repl</h1><br><form action='repl' method='POST'>
+<!DOCTYPE html><html><head><style>{send_css()}</style></head><body><h1>Mo's Repl</h1><br><form action='repl' method='POST'>
 Terminal:<br>
 <form action='/repl' method='POST'>
 <textarea name="clear" class="textarea" cols=60 rows={the_runs.count('\n') + 6} >{the_runs}</textarea>
@@ -74,7 +75,7 @@ remember: python uses 4 spaces as indents, but 2 spaces will work here ;)<br>
 shift + enter for newline, enter will run code
 """)
 
-    yield from resp.awrite('<br><br><br><a href="/"><button class="button grey">home</button></a><br>')
+    yield from resp.awrite(f'<br><br><br><a href="/"><button class="button grey">home</button></a><br>{script()}</body></html>')
     gc.collect()
 
 def send_css():
@@ -92,12 +93,4 @@ if(event.key == "Enter"  && !event.shiftKey) {
 </script>"""
 
 
-# function submitOnEnter(){
-#     var x = event.keycode
-#     console.log(x)
-#     if(event.which === 13 && !event.shiftKey){
-#         event.target.form.dispatchEvent(new Event("submit", {cancelable: true}));
-#         event.preventDefault();
-#     }
-# }
-# <form action='/repl' method='POST'>single line: <input name='code'/><input type='submit' value='run'></form><br>
+

@@ -51,4 +51,5 @@ class Neo(mm.Agent):
             self.neo[i] = (self.rbow[index], self.rbow[(index + 12)%36], self.rbow[(index + 24)%36])
         self.neo.write()
         self.r_idx = (self.r_idx + 1) % 36
-        
+
+

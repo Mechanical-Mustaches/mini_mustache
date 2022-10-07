@@ -11,6 +11,7 @@ logging.basicConfig(level=logging.INFO)
 
 import mechanical_mustaches.web.repl as repl
 import mechanical_mustaches.web.stacheboard as stacheboard
+import mechanical_mustaches.web.editor as editor
 
 site = picoweb.WebApp(__name__)
 
@@ -26,6 +27,7 @@ def index(req, resp):
 FIRST® Robotics Team 8122<br>
 <a href="/repl"><button class="button grey">repl</button></a>
 <a href="/stacheboard"><button class="button grey">stacheboard</button></a>
+<a href="/editor"><button class="button grey">editor</button></a>
 <a href="/about"><button class="button grey">about</button></a><br><br><br>
 <p style="font-size:8px">FIRST ® , the FIRST® logo, FIRST ® Robotics Competition, and FIRST ® Tech Challenge, are registered
 trademarks of FIRST ® (<a href="http://www.firstinspires.org">www.firstinspires.org</a>) which is not overseeing, involved with, or
@@ -58,6 +60,7 @@ def send_css():
 
 
 site.mount('/repl', repl.app)
+site.mount('/editor', editor.app)
 site.mount('/stacheboard', stacheboard.app)
 site.run(debug=1, port=80, host=config.my_ip)
 
