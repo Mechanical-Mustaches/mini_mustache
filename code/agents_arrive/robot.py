@@ -92,7 +92,7 @@ class Robot:
 #         if A.read():
 #             m.change_state('auto')
         
-        
+
 
         
         

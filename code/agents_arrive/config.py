@@ -54,6 +54,8 @@ port_C = {
     }
 
 
+with open('/mechanical_mustaches/web/errors.log', 'w') as f:
+    f.write('')
 
 import uasyncio as asyncio
 from mechanical_mustaches import StacheStation
@@ -101,3 +103,5 @@ def wifi_connect(*args):
         my_ip = ap.ifconfig()[0]
     ss.fill(0,0,0)
     print('my ip address is: ', my_ip)
+
+ss.fill(0,4,2)

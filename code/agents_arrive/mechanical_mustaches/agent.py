@@ -80,6 +80,7 @@ class CEO:
         self.robot = robot
         self.robot.robotInit()
         self.robot.disabledInit()
+        print('BOOT COMPLETE')
         loop = asyncio.get_event_loop()
         loop.create_task(self.loop())
         loop.run_forever()

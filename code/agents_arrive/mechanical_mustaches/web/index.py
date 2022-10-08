@@ -5,7 +5,6 @@ import mechanical_mustaches.web.ulogging as logging
 import json
 import esp32
 import uasyncio
-import agents.stache_board
 import config
 logging.basicConfig(level=logging.INFO)
 
@@ -15,13 +14,22 @@ import mechanical_mustaches.web.editor as editor
 
 site = picoweb.WebApp(__name__)
 
+errors_checked_for = False
+errors = ''
+
 
 @site.route("/")
 def index(req, resp):
+    global errors_checked_for
+    global errors
+    if not errors_checked_for:
+        with open('/mechanical_mustaches/web/errors.log', 'r') as f:
+            errors = f.read().replace('\n', '<br>')
+    
     yield from picoweb.start_response(resp)
     yield from resp.awrite(f"""
 <!DOCTYPE html><html><head><title>Mo's Mayhem</title><style>{send_css()}</style></head><body>
-<h1 style="font-size:40px">Mo</h1><p style="font-size:20px; color: #FFFFFF;">by: The Mechanical Mustaches</p>
+<h1 style="font-size:40px">Mo</h1><p style="font-size:20px; color: #FFFFFF;">by: The Mechanical Mustaches</p>{errors}
 <img src='mechanical_mustaches/web/static/mm_logo.png'style="width: 150px;"></img><br>
 <img src='mechanical_mustaches/web/static/FIRST_Horz_RGB.png' style="width: 150px;" /></img><br></body><html><br>
 FIRST® Robotics Team 8122<br>

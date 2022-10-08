@@ -5,19 +5,44 @@ import mechanical_mustaches.web.ulogging as logging
 import json
 import esp32
 import uasyncio
-import agents.stache_board
+import sys
 
-m.find_outputs()
-m.make_rez()
+
+
+
+
+g_imprtd = False
+
+user_buttons = {}
+page = ''
 
 def send_css():
     with open('/mechanical_mustaches/web/static/mustache.css', 'r') as f:
         return f.read().replace('\r\n', '')
 
 def create_webpage():
-    page = [f"<html><head><title>Mo's Mayhem</title><style>{send_css()}</style>",
+    global page
+    global user_buttons
+    
+    try:
+        from agents.stache_board import buttons as user_buttons
+
+    except Exception as e:
+        sys.print_exception(e)
+        pass
+    
+    
+    m.find_outputs()
+    m.make_rez()
+    page = ''.join([f"<html><head><title>Mo's Mayhem</title><style>{send_css()}</style>",
 """
-<script>
+</head><body><br>
+<h1>Mo's Stache'board<br></h1><h3>dashboard</h3><strong>
+    Count: <div class="stch_brd" id="count"></div>
+    M.state: <div class="stch_brd" id="m_state"></div>
+    Temp: <div class="stch_brd" id="temp"></div>""",
+    ''.join([f'{name.replace("_", ".")}: <div class="stch_brd" id="{name}"></div>' for name, _ in m.the_rez]),
+    """<br><br></strong><p><script>
 var source = new EventSource("stacheboard/events");
 source.onmessage = function(event) {
   var load = JSON.parse(event.data);
@@ -32,16 +57,8 @@ source.onmessage = function(event) {
         console.log(error);
         document.getElementById("result").innerHTML += "EventSource error:" + error + "<br>";
     }
-</script></head><body><br>
-<h1>Mo's Stache'board<br></h1><h3>dashboard</h3><strong>
-    Count: <div class="stch_brd" id="count"></div>
-    M.state: <div class="stch_brd" id="m_state"></div>
-    Temp: <div class="stch_brd" id="temp"></div>""",
-    ''.join([f'{name.replace("_", ".")}: <div class="stch_brd" id="{name}"></div>' for name, _ in m.the_rez]),
-    '<br><br></strong><p>']
-    return ''.join(page)
+</script></body></html>"""])
 
-page = create_webpage()
 
 form_data = None
 
@@ -57,14 +74,19 @@ def button(func, color, location):
     return f'<a href="/stacheboard?button_{location}={func}"><button class="button {color}">{func}</button></a>'
 
 def process(form):
+    global g_imprtd
     for k, v in form.items():
         if k =='button_m':
             funcs[v]()
         if k =='button_stache':
-            agents.stache_board.buttons[v]()
+            user_buttons[v]()
 
 # @site.route("/")
 def index(req, resp):
+    if not page:  # page should be created only after all agents and m have finished booting
+        create_webpage()
+        
+                
     if req.method == "POST":
         yield from req.read_form_data()
     else: # must be GET
@@ -76,8 +98,11 @@ def index(req, resp):
     for func in funcs:
         yield from resp.awrite(button(func, 'pink', 'm'))
     yield from resp.awrite('<br><hr><strong>agents.stache_board.buttons</strong><br>')
-    for butt in agents.stache_board.buttons:
-        yield from resp.awrite(button(butt, 'grey', 'stache'))
+    if not user_buttons:
+        yield from resp.awrite('<strong><p style="color:red">agents.stacheboard buttons failed to load<br>check traceback to find issue</p></strong>')
+    else:
+        for butt in user_buttons:
+            yield from resp.awrite(button(butt, 'grey', 'stache'))
     yield from resp.awrite('</p><br><a href="/"><button class="button pink">home</button></a></html>')
     
 

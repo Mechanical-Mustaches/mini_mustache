@@ -52,4 +52,3 @@ class Neo(mm.Agent):
         self.neo.write()
         self.r_idx = (self.r_idx + 1) % 36
 
-

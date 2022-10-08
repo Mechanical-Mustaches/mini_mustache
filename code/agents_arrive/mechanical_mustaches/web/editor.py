@@ -36,11 +36,14 @@ def process(form, resp):
 
 def parse_dir(dir_name, f) -> dict:
     global files
+    ignore = ('mechanical_mustaches', 'boot.py', 'webrepl_cfg.py', 'main.py', 'config.py')
     name, _type, _, size = f
     ext = f'{dir_name}/{name}'
+    if name in ignore:
+        return
     if _type > 30000:  # this is a file
         files.append(ext)
-    elif name != 'mechanical_mustaches':  # no one should be editing these
+    else:   # must be directory
         for file in uos.ilistdir(ext):
             parse_dir(ext, file)
 
