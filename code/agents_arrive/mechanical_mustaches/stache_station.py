@@ -1,23 +1,11 @@
-import config
-
-ss = config.stache_station
 from machine import Pin
 from neopixel import NeoPixel
 import uasyncio as asyncio
 
+import config
 
-class LCD:
-    def __init__(self, lcd_sda, lcd_scl):
-        import mechanical_mustaches.ssd1306 as ssd1306
-        self.i2c = SoftI2C(scl=Pin(lcd_scl), sda=Pin(lcd_sda), freq=400000)
-        self.lcd = ssd1306.SSD1306_I2C(width=128, height=64, i2c=i2c, addr=0x3c, external_vcc=False)
+ss = config.stache_station
 
-    def print(self, line):
-        print(line)
-    
-    def clear(self):
-        self.lcd.fill(0)
-        self.lcd.show()
 
 
 class StacheStation:

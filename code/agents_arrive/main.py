@@ -20,10 +20,18 @@ except Exception as e:
     with open('/mechanical_mustaches/web/errors.log', 'w') as f:
         sys.print_exception(e, f)
     config.ss.fill(5,0,0)
-    print("BOOT COMPLETE")
+    m.post("BOOT COMPLETE")
+    m.post("WITH ERRORS")
     import uasyncio
     loop = uasyncio.get_event_loop()
     loop.run_forever()
     
 
 
+  #----------------------------------
+  #  comment all code above and write code in scratchpad
+  #  for quick to boot code
+  #----------------------------------
+  
+
+from scratchpad import *

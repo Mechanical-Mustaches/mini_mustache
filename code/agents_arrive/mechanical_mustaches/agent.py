@@ -80,7 +80,7 @@ class CEO:
         self.robot = robot
         self.robot.robotInit()
         self.robot.disabledInit()
-        print('BOOT COMPLETE')
+        self.post('BOOT COMPLETE')
         loop = asyncio.get_event_loop()
         loop.create_task(self.loop())
         loop.run_forever()
@@ -147,6 +147,13 @@ class CEO:
                 if isinstance(value, outputs):
                     print(f"found name:{this_name} and value:{value}")
                     self.agents[this_agent.name]['outputs'][this_name] = value
+                    
+    def set_LCD(self, lcd):
+        self.lcd = lcd
+    
+    def post(self, the_post: str):
+        self.lcd.print(the_post)
+        print(the_post)
 
 
 m = CEO('m')

@@ -4,6 +4,7 @@ import time
 import framebuf
 
 
+
 # register definitions
 SET_CONTRAST        = const(0x81)
 SET_ENTIRE_ON       = const(0xa4)
@@ -166,3 +167,5 @@ class SSD1306_SPI(SSD1306):
         self.res.low()
         time.sleep_ms(10)
         self.res.high()
+
+

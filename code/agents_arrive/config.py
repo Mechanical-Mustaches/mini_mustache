@@ -53,12 +53,25 @@ port_C = {
     'D': 39
     }
 
+lcd = {
+    'sda': 23,
+    'scl': 22
+    }
 
+# clear error log
 with open('/mechanical_mustaches/web/errors.log', 'w') as f:
     f.write('')
 
 import uasyncio as asyncio
-from mechanical_mustaches import StacheStation
+import mechanical_mustaches as mm
+mm.invite_m()
+from mechanical_mustaches.agent import m
+
+m.set_LCD(mm.LCD(lcd['sda'], lcd['scl']))
+
+m.post('stch stn en')
+from mechanical_mustaches.stache_station import StacheStation
+
 ss = None
 if stache_station['enable']:
     ss = StacheStation(**stache_station)
@@ -70,12 +83,14 @@ if stache_station['enable']:
 my_ip = None
 
 def wifi_connect(*args):
+
     import network
     import utime
     import machine
     import utime
     global my_ip
     if args:
+        m.post('wifi: station mode')
         ss.fill(0,4,0)
         _ssid, password = args
         wlan = network.WLAN(network.STA_IF)
@@ -93,7 +108,8 @@ def wifi_connect(*args):
         letters = "ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789"
         id = list(machine.unique_id())
         ap_name = 'mustache-' + ''.join([letters[l % len(letters)] for l in id])
-        print('creating access point', ap_name)
+        print('creating access point')
+        m.post('ap: ' + ap_name)
         ap = network.WLAN(network.AP_IF) # create access-point interface
         # print(dir(ap.config))
         utime.sleep_ms(500)
@@ -102,6 +118,7 @@ def wifi_connect(*args):
         ap.active(True)         # activate the interface
         my_ip = ap.ifconfig()[0]
     ss.fill(0,0,0)
-    print('my ip address is: ', my_ip)
+    m.post(my_ip)
+    m.post('my ip address is:')
 
 ss.fill(0,4,2)
