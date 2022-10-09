@@ -1,0 +1,103 @@
+https://www.tutorialspoint.com/python/python_basic_operators.htm
+
+
+
+>>> # this is a comment
+>>> 1
+1
+>>> 1+1
+2
+>>> one = 1
+>>> one
+1
+>>> two = 2
+>>> two
+2
+>>> one + two
+3
+
+
+>>> one = 1
+>>> two = 2
+>>> one == 1
+True
+>>> one == 2
+False
+>>> 1 < two
+True
+>>> one + one == two
+True
+>>> one + 1 == two
+True
+>>> two - one == 1
+True
+>>> def adds(x, y):
+    return x + y
+>>> adds(1,2)
+3
+>>> adds(one, two)
+3
+>>> adds(1, one) == two
+True
+>>> wally
+nice to meet you comrade I am wally, I am a Wheels
+>>> def greater_than(x, y):
+invalid syntax
+>>> def greater_than(x, y):
+    return x < y
+        
+>>> greater_than(one, two)
+True
+>>> is_even(number):
+  if number
+    return 'even'
+  else:
+    return 'odd'
+invalid syntax
+>>> is_even(number):
+  if number
+    return 'even'
+  else:
+    return 'odd'
+invalid syntax
+>>> is_even(number):
+  if number%2:
+    return 'odd'
+  else:
+    return 'even'
+invalid syntax
+>>> is_even(number):
+    if number%2:
+      return 'odd'
+    else:
+      return 'even'
+invalid syntax
+>>> is_even(number):
+    if number%2:
+      return 'odd'
+invalid syntax
+>>> def is_even(number):
+    if number%2:
+      return 'odd'
+>>> def is_even(number):
+    if number%2:
+        return 'odd'
+    else:
+        return 'even'
+>>> is_even(2)
+even
+>>> is_even(1001)
+odd
+>>> nemo()
+ring ring hello this is nemo, who's there
+>>> nemo(1,2,3)
+you want an argument, I'll tell you where you can stick your (1, 2, 3)
+>>> nemo(name='name', this='that')
+I love kwargs <3, thank you for the {'name': 'name', 'this': 'that'}
+>>> dir(wally)
+['__call__', '__class__', '__init__', '__module__', '__qualname__', '__repr__', '__str__', 'stop', '__dict__', 'name', 'state', 'rez', 'check', 'test', 'louie', 'roger', 'tankdrive', 'drive']
+>>> wally.__dict__
+{'louie': <Motor object at 3ffed320>, 'roger': <Motor object at 3ffed280>, 'name': 'wally', 'state': None}
+>>> wally.ispy()
+'Wheels' object has no attribute 'ispy'
+

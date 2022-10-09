@@ -1,3 +1,10 @@
 
 *.zip
 cad-source-files/accessory-boards/battery/Battery_holder/\#auto_saved_files\#
+.idea/vcs.xml
+.idea/modules.xml
+.idea/misc.xml
+.idea/mini_mustache.iml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/workspace.xml
