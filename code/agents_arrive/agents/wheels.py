@@ -8,6 +8,7 @@ class Wheels(mm.Agent):
         self.name = name
         self.louie = mm.Motor(**louie)
         self.roger = mm.Motor(**roger)
+        self.state = 'sleeping'
         print("{} has rolledddddddd on in".format(self.name))
 
     def tankdrive(self, left, right):
