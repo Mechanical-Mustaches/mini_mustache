@@ -5,7 +5,7 @@ print('hello 4787 axiom')
 
 
 class LineSensor:
-    def __init__(self, pins, threshold, turn_strength):
+    def __init__(self, pins: tuple[int], threshold: int, turn_strength: float):
         self.sensors = [ADC(Pin(pin), attn=ADC.ATTN_11DB) for pin in pins]
         self.threshold = threshold
         self.turn_str = self.make_turn_strength(turn_strength)
@@ -19,7 +19,7 @@ class LineSensor:
         return 0
 
     @staticmethod
-    def make_turn_strength(mag):  # .3 looks good
+    def make_turn_strength(mag: float):  # .3 looks good
         return {0: 0, 1: mag, 3: mag / 2, 2: mag / 3}
 
     def read(self):
