@@ -1,7 +1,12 @@
 import uasyncio as asyncio
+from collections import OrderedDict
+
+
 from mechanical_mustaches.auto import Auto
 import mechanical_mustaches.motor
 from mechanical_mustaches.stache_station import FakeStation
+
+
 
 class Agent:
     """
@@ -44,7 +49,7 @@ class Agent:
 class CEO:
     def __init__(self, name):
         self.name = name
-        self.agents = {}
+        self.agents = OrderedDict()
         self.state = 'disabled'  # auto, test, disabled
         self.autos = []
         self.the_rez = []
@@ -81,6 +86,7 @@ class CEO:
         self.robot = robot
         self.robot.robotInit()
         self.robot.disabledInit()
+        self.find_outputs()
         self.post('BOOT COMPLETE')
         loop = asyncio.get_event_loop()
         loop.create_task(self.loop())
@@ -144,7 +150,7 @@ class CEO:
             for this_name, value in this_agent.__dict__.items():  # (name, value) = (k, v) --> (key, value)
                 # print(this_name, value)
                 if isinstance(value, outputs):
-                    print(f"found name:{this_name} and value:{value}")
+                    # print(f"found name:{this_name} and value:{value}")
                     self.agents[this_agent.name]['outputs'][this_name] = value
                     
     def set_LCD(self, lcd):

@@ -32,7 +32,7 @@ def create_webpage():
         pass
     
     
-    m.find_outputs()
+    # m.find_outputs()
     m.make_rez()
     page = ''.join([f"<html><head><title>Mo's Mayhem</title><style>{send_css()}</style>",
 """

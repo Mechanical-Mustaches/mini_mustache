@@ -37,7 +37,6 @@ wiggles = [
 
 
 
-
 class Robot:
     def __init__(self):
         pass
@@ -77,8 +76,6 @@ class Robot:
     
     async def teleopPeriodic(self):
         await m.check()
-#         lefty.set(knob.read())
-#         righty.set(knob.read())
         
         
     def disabledInit(self):
@@ -89,8 +86,7 @@ class Robot:
     async def disabledPeriodic(self):
 #         pass
         nemo.check()
-#         if A.read():
-#             m.change_state('auto')
+
         
 
 

@@ -37,8 +37,8 @@ class Timer():
         if utime.ticks_diff(utime.ticks_ms(), self.lil_sam) >= 0:
             self.waiting = False
             return True
-        else:
-            return False
+
+        return False
         
         
     

@@ -43,11 +43,11 @@ class Auto:
             return
         
 
-    def run(self, new_book: list[any], **kwargs):
+    def run(self, new_book: list[any], start=True, loop=False, **kwargs):
         self.book = new_book
         self.bookmark = 0
         self.running = True
-        if kwargs:
-            if kwargs['start'] == False:
-                return
+        self.loop = loop
+        if not start:
+            return
         self.check()
