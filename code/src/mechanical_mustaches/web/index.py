@@ -70,5 +70,5 @@ def send_css():
 site.mount('/repl', repl.app)
 site.mount('/editor', editor.app)
 site.mount('/stacheboard', stacheboard.app)
-site.run(debug=1, port=80, host=config.my_ip)
+site.run(debug=1, port=80, host=mm.my_ip)
 

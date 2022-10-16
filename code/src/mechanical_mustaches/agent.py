@@ -1,7 +1,7 @@
 import uasyncio as asyncio
 from mechanical_mustaches.auto import Auto
 import mechanical_mustaches.motor
-import config
+from mechanical_mustaches.stache_station import FakeStation
 
 class Agent:
     """
@@ -48,6 +48,7 @@ class CEO:
         self.state = 'disabled'  # auto, test, disabled
         self.autos = []
         self.the_rez = []
+        self.ss = FakeStation  # stache station
 
     def talk(self):
         print(f'hello i am {self.name.upper()} nice to meet you {self.agents}')
@@ -99,9 +100,7 @@ class CEO:
             elif self.state == 'disabled':
                 await self.robot.disabledPeriodic()
                 await self.robot.robotPeriodic()
-            if not config.ss.function_button.value():
-                print('Function Button Pressed Raising KeyboardInterrupt')
-                raise KeyboardInterrupt
+            self.ss.check()
             await asyncio.sleep_ms(20)
 
     def add_auto(self, playbook: list, **kwargs):

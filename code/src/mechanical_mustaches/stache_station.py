@@ -2,14 +2,9 @@ from machine import Pin
 from neopixel import NeoPixel
 import uasyncio as asyncio
 
-import config
-
-ss = config.stache_station
-
-
 
 class StacheStation:
-    def __init__(self, hbt_led, function_button, neo_status, **kwargs):
+    def __init__(self, *, hbt_led, function_button, neo_status, **kwargs):
         self.hbt_led = Pin(hbt_led, Pin.OUT)
         self.function_button = Pin(function_button, Pin.IN)
         self.neo = NeoPixel(Pin(neo_status, Pin.OUT), 1)
@@ -34,6 +29,14 @@ class StacheStation:
         self.neo.write()
         
     
-        
+class FakeStation:
+    def __init__(self):
+        pass
+    
+    def check(*args, **kwargs):
+        pass
+    
+    def fill(*args, **kwargs):
+        pass
 
     
