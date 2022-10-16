@@ -1,26 +1,190 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>WebSocket Client</title>
-</head>
-<body>
 
-Received: <br/>
-<div id="response">
-    (Received content)
+<html>
+
+    <head>
+        <meta charset="utf-8" />
+        <title>I Mustache: U Chat</title>
+
+    </head>
+
+    <style>
+        .chat-zone {
+            height : 350px;
+            padding: 10px;
+            background-color: #304050;
+            font: 15px monospace;
+            color: white;
+            overflow: scroll;
+        }
+        #input-chat {
+            rows: 5
+            border: 0px;
+            padding: 10px 10px;
+            outline: none;
+            border-top: 1px solid white;
+            background-color: #304050;
+            font: 15px monospace;
+            letter-spacing: 2px;
+            color: white;
+            overflow: scroll;
+            overflow: scroll;
+        }
+        #littles {
+            rows: 5
+            border: 0px;
+            width: 10%;
+            padding: 10px 10px;
+            outline: none;
+            border-top: 1px solid white;
+            background-color: #304050;
+            font: 15px monospace;
+            letter-spacing: 2px;
+            color: white;
+        }
+        input {
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            width: 100%;
+            margin-top: 3px;
+            border: 2px solid #5FA3D3;
+        }
+    </style>
+    
+    <body>
+      <h1>I Mustache: U Chat</h1>
+      <div id="chat" class="chat-zone">
+      </div>
+      <div id="input-chat" contenteditable="true"></div>
+      shift + enter for newline
+      <br><br>
+      put cursor in box to send keystrokes
+      <div id="littles" contenteditable="true"></div>
+      <button id="sendHello">sendHello</button><br><br><br>
+      
+      <a href="/about"><button>about</button></a>
+      <div>
+    <img src="mm_logo.png" alt="Success Story" height="200"/>
+    <img src="FIRST_Horz_RGB.png" alt="Success Story" height="200"/>
 </div>
+    
+    <script language="javascript">
 
-<script>
-    var ws = new WebSocket("ws://" + 10.203.136.32 + ":80");
-    
-    ws.onopen = function () {
-        ws.send("Hello");
-    };
-    
-    ws.onmessage = function (evt) {
-        document.getElementById("response").innerHTML = evt.data;
-    };
-</script>
+        function init()
+        {
+            var scheme
+            if (window.location.protocol == 'https:')
+                scheme = 'wss:';
+            else
+                scheme = 'ws:';
+            //var wsUri           = scheme + '//' + window.location.hostname + '/wschat';
+            var wsUri           = 'ws://10.203.136.51:80';
+            writeLineToChat("Connection to " + wsUri + "...")
+            websocket           = new WebSocket(wsUri);
+            websocket.onopen    = function(evt) { onOpen    (evt) };
+            websocket.onclose   = function(evt) { onClose   (evt) };
+            websocket.onmessage = function(evt) { onMessage (evt) };
+            websocket.onerror   = function(evt) { onError   (evt) };
+            getElmById("input-chat").addEventListener("keydown", onChatLine);
+            getElmById("input-chat").focus();
+            this_history = [];
+            getElmById("littles").addEventListener("keydown", onLittles);
+            getElmById("littles").addEventListener("keyup", offLittles);
+            button_presses = [];
+        }
+
+        function getElmById(id) {
+            return document.getElementById(id);
+        }
+
+        function writeLineToChat(line)
+        {
+            var elm = getElmById('chat');
+            if (elm)
+            {
+                var lineElm = document.createElement('div');
+                if (line) {
+                    var time = new Date().toLocaleTimeString();
+                    lineElm.innerText = "[" + time + "] " + line;
+                }
+                else
+                    lineElm.innerHTML = '&nbsp;';
+                elm.appendChild(lineElm);
+                elm.scrollTop = elm.scrollHeight;
+            }
+        }
+
+        function onOpen(evt)
+        {
+            writeLineToChat("[CONNECTED]")
+        }
+
+        function onClose(evt)
+        {
+            writeLineToChat("[CONNECTION CLOSED]")
+        }
+
+        function onMessage(evt)
+        {
+            writeLineToChat(evt.data)
+        }
+
+        function onError(evt)
+        {
+            writeLineToChat("[CONNECTION ERROR]")
+        }
+
+        function onChatLine(e) {
+            key = (e.key || e.keyCode);
+            console.log(key);
+            var index = 0;
+            
+            if (key.toUpperCase() === "ARROWUP") {
+                console.log(this_history[0]);
+                getElmById("input-chat").innerHTML = this_history[index]
+                index += 1
+            }
+            else if ((key === 13 || key.toUpperCase() === "ENTER") && !event.shiftKey) {
+                input       = getElmById("input-chat");
+                line        = input.innerHTML.trim();
+                line = line.replace('<br>', '\n');
+                cleanText = line.replace(/<\/?[^>]+(>|$)/g, "");
+                console.log(cleanText)
+                this_history.unshift(line)
+                writeLineToChat(">>> " + cleanText)
+                index = 0
+                input.innerHTML = "";
+
+                if (line.length > 0)
+                    websocket.send(line);
+            }
+        }
+        function onLittles(e) {
+            key = (e.key || e.keyCode);
+            console.log(e.repeat);
+            if (!e.repeat) {
+                console.log(e.key, 'on');
+                websocket.send('~' + e.key);
+            }
+
+            getElmById("littles").innerHTML = "";
+        }
+        function offLittles(e) {
+            key = (e.key || e.keyCode);
+            console.log(e.repeat);
+            if (!e.repeat) {
+                console.log(e.key, 'off');
+                websocket.send('!' + e.key);
+            }
+
+            getElmById("littles").innerHTML = "";
+        }
+        
+        document.getElementById("sendHello").onclick = function(){websocket.send('hello');};
+
+        window.addEventListener("load", init, false);
+
+    </script>
 </body>
 </html>
