@@ -2,6 +2,7 @@ import mechanical_mustaches as mm
 from mechanical_mustaches import m
 
 
+
 mm.wifi_connect()
 
 
@@ -34,4 +35,4 @@ except Exception as e:
   #----------------------------------
   
 
-from scratchpad import *
+# from scratchpad import *

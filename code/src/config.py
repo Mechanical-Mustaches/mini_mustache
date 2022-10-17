@@ -6,14 +6,16 @@ wally = {
         'r_pin': 26,
         'freq': 20000,
         'name': 'louie',
-        'inverted': True
+        'inverted': True,
+        'clamp': (675, 1023)
         },
     'roger': {
         'f_pin': 25,
         'r_pin': 33,
         'freq': 20000,
         'name': 'roger',
-        'inverted': True
+        'inverted': True,
+        'clamp': (675, 1023)
         }
     }
 

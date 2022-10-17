@@ -8,6 +8,7 @@ class Neo(mm.Agent):
     rbow = tuple([int((math.sin(math.pi / 18 * i) * 127 + 128) / 10) for i in range(36)])
     pink = (10,0,4)
     
+    # ------------------------------------------------------------------------
     
     def __init__(self, pin: int, num_pix:int , name: str='nemo'):
         super().__init__(name)
@@ -20,7 +21,8 @@ class Neo(mm.Agent):
         self.auto = mm.Auto()
         self.timmy = mm.Timer()
         
-        
+    # ------------------------------------------------------------------------
+    
     def fill(self, r, g, b):
         """
         Range is 0 --> 255 for (R,G,B) colors 

@@ -32,8 +32,7 @@ def create_webpage():
         pass
     
     
-    # m.find_outputs()
-    m.make_rez()
+    m.make_report()
     page = ''.join([f"<html><head><title>Mo's Mayhem</title><style>{send_css()}</style>",
 """
 </head><body><br>
@@ -41,7 +40,7 @@ def create_webpage():
     Count: <div class="stch_brd" id="count"></div>
     M.state: <div class="stch_brd" id="m_state"></div>
     Temp: <div class="stch_brd" id="temp"></div>""",
-    ''.join([f'{name.replace("_", ".")}: <div class="stch_brd" id="{name}"></div>' for name, _ in m.the_rez]),
+    ''.join([f'{name.replace("_", ".")}: <div class="stch_brd" id="{name}"></div>' for name, _ in m.the_report]),
     """<br><br></strong><p><script>
 var source = new EventSource("stacheboard/events");
 source.onmessage = function(event) {
@@ -51,7 +50,7 @@ source.onmessage = function(event) {
   document.getElementById("count").innerHTML = load.count;
   document.getElementById("m_state").innerHTML = load.m_state;
 """,
-    ''.join([f'document.getElementById("{name}").innerHTML = load.{name};' for name, _ in m.the_rez]),
+    ''.join([f'document.getElementById("{name}").innerHTML = load.{name};' for name, _ in m.the_report]),
     """}
     source.onerror = function(error) {
         console.log(error);
@@ -118,7 +117,7 @@ def events(req, resp):
             load = {"count": i,
                     "temp": esp32.raw_temperature(),
                     "m_state": m.state}
-            load.update(m.rez())
+            load.update(m.report())
             load = "data: {}\n\n".format(json.dumps(load))
             yield from resp.awrite(load)
             yield from uasyncio.sleep(.5)

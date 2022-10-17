@@ -31,3 +31,5 @@ class Servo:
     def clamp(self, val, _min, _max):
         return int(((val - _min) / (_max - _min)) * (self.max - self.min) + self.min)
     
+    def report(self):
+        return self.pin.duty()

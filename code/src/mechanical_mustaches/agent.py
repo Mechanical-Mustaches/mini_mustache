@@ -31,7 +31,7 @@ class Agent:
     def test(self):
         pass
 
-    def rez(self):
+    def report(self):
         return self.state
 
     def __call__(self, *args, **kwargs):
@@ -52,7 +52,7 @@ class CEO:
         self.agents = OrderedDict()
         self.state = 'disabled'  # auto, test, disabled
         self.autos = []
-        self.the_rez = []
+        self.the_report = []
         self.ss = FakeStation  # stache station
 
     def talk(self):
@@ -134,14 +134,14 @@ class CEO:
 
         self.state = state
 
-    def make_rez(self):
+    def make_report(self):
         for name, agent in self.agents.items():
-            self.the_rez.append([f'{name}_state', agent['self']])
+            self.the_report.append([f'{name}_state', agent['self']])
             for o_name, output in agent['outputs'].items():
-                self.the_rez.append([f'{name}_{o_name}_state', output])
+                self.the_report.append([f'{name}_{o_name}_state', output])
 
-    def rez(self):
-        return {k:v.rez() for k,v in self.the_rez}
+    def report(self):
+        return {k:v.report() for k,v in self.the_report}
 
     def find_outputs(self):
         outputs = (mechanical_mustaches.motor.Motor)

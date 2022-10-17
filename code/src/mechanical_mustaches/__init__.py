@@ -1,4 +1,26 @@
 
+mustache = (
+'  mm         mmmmm     mmmmm         mm  ',
+' mm        mmmmmmmm   mmmmmmmm        mm ',
+'mm        mmmmmmmmmm mmmmmmmmmm        mm',
+'mm       mmmmmmmmmmmmmmmmmmmmmmm       mm',
+'mmm    mmmmmmmmmmmmmmmmmmmmmmmmmmm    mmm',
+'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm',
+' mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm ',
+'  mmmmmmmmmmmmmmmmmm mmmmmmmmmmmmmmmmmm  ',
+'   mmmmmmmmmmmmmmmm   mmmmmmmmmmmmmmmm   ',
+'     mmmmmmmmmmm          mmmmmmmmmm     ')
+
+
+
+def mu():
+    yield from mustache
+
+stache = mu()
+
+
+
+
 import config
 print(f'board version: {config.version}')
 
@@ -6,40 +28,40 @@ print(f'board version: {config.version}')
 with open('/mechanical_mustaches/web/errors.log', 'w') as f:
     f.write('')
 
-print('growing mustache :{D ', end='')
+print('growing mustache :{D ')
 from mechanical_mustaches.motor import Motor
-print('.', end='')
+print(next(stache))
 from mechanical_mustaches.servo import Servo
-print('.', end='')
+print(next(stache))
 from mechanical_mustaches.timer import Timer
-print('.', end='')
+print(next(stache))
 from mechanical_mustaches.auto import Auto
-print('.', end='')
+print(next(stache))
 from mechanical_mustaches.button import Button
-print('.', end='')
+print(next(stache))
 from mechanical_mustaches.knob import Knob
-print('.', end='')
+print(next(stache))
 from mechanical_mustaches.lcd import LCD
-print('.', end='')
+print(next(stache))
 from mechanical_mustaches.agent import Agent, m
-print('.', end='')
+print(next(stache))
 from mechanical_mustaches.stache_station import StacheStation
-print('.', end='')
+print(next(stache))
 
 
 def start_web_page():
     print('begin webpage')
     import mechanical_mustaches.web.index
 
-print('.', end='')
+
 m.set_LCD(LCD(config.lcd['sda'], config.lcd['scl']))
-print('.', end='')
+print(next(stache))
 if config.stache_station['enable']:
     import uasyncio
     m.ss = StacheStation(**config.stache_station)
     loop = uasyncio.get_event_loop()
     loop.create_task(m.ss.hbt())
-print('.', end='')  
+ 
 
 my_ip = None
 
@@ -80,4 +102,3 @@ def wifi_connect(*args):
     m.ss.fill(0,0,0)
     m.post(my_ip)
     m.post('my ip address is:')
-print('.')
