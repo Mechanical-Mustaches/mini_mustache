@@ -1,12 +1,12 @@
 
 mustache = (
-'  mm         mmmmm     mmmmm         mm  ',
+'   m         mmmmm     mmmmm         m   ',
 ' mm        mmmmmmmm   mmmmmmmm        mm ',
 'mm        mmmmmmmmmm mmmmmmmmmm        mm',
 'mm       mmmmmmmmmmmmmmmmmmmmmmm       mm',
-'mmm    mmmmmmmmmmmmmmmmmmmmmmmmmmm    mmm',
-'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm',
-' mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm ',
+'mmm    mmmmm FIRST® Robotics mmmmm    mmm',
+'mmmmmmmmmmmmmm Team: 8122 mmmmmmmmmmmmmmm',
+' mmmmmmmm Mechanical  Mustaches mmmmmmmm ',
 '  mmmmmmmmmmmmmmmmmm mmmmmmmmmmmmmmmmmm  ',
 '   mmmmmmmmmmmmmmmm   mmmmmmmmmmmmmmmm   ',
 '     mmmmmmmmmmm          mmmmmmmmmm     ')

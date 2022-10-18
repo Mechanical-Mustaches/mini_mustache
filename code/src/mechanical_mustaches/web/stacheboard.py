@@ -37,11 +37,16 @@ def create_webpage():
 """
 </head><body><br>
 <h1>Mo's Stache'board<br></h1><h3>dashboard</h3><strong>
-    Count: <div class="stch_brd" id="count"></div>
-    M.state: <div class="stch_brd" id="m_state"></div>
-    Temp: <div class="stch_brd" id="temp"></div>""",
-    ''.join([f'{name.replace("_", ".")}: <div class="stch_brd" id="{name}"></div>' for name, _ in m.the_report]),
-    """<br><br></strong><p><script>
+<div>
+<table>
+<tr><td>count:</td><td id="count"> </td></tr>
+<tr><td>robot.state:</td><td id="m_state"> </td></tr>
+<tr><td>temp:</td><td id="temp"> </td></tr>
+""",
+''.join([f'<tr><td>{name.replace("_", ".")}:</td><td id="{name}"> </td></tr>' for name, _ in m.the_report]),
+"""
+</table></div>
+<br><br></strong><p><script>
 var source = new EventSource("stacheboard/events");
 source.onmessage = function(event) {
   var load = JSON.parse(event.data);
@@ -50,11 +55,11 @@ source.onmessage = function(event) {
   document.getElementById("count").innerHTML = load.count;
   document.getElementById("m_state").innerHTML = load.m_state;
 """,
-    ''.join([f'document.getElementById("{name}").innerHTML = load.{name};' for name, _ in m.the_report]),
-    """}
-    source.onerror = function(error) {
-        console.log(error);
-        document.getElementById("result").innerHTML += "EventSource error:" + error + "<br>";
+''.join([f'document.getElementById("{name}").innerHTML = load.{name};' for name, _ in m.the_report]),
+"""}
+source.onerror = function(error) {
+    console.log(error);
+    document.getElementById("result").innerHTML += "EventSource error:" + error + "<br>";
     }
 </script></body></html>"""])
 
