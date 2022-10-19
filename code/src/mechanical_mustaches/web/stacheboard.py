@@ -32,7 +32,7 @@ def create_webpage():
         pass
     
     
-    m.make_report()
+    # m.make_report()
     page = ''.join([f"<html><head><title>Mo's Mayhem</title><style>{send_css()}</style>",
 """
 </head><body><br>

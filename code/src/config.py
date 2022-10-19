@@ -29,7 +29,7 @@ stache_station = {
     'hbt_led': 27,
     'function_button': 36,
     'neo_status': 14,
-    'enable': False
+    'enable': True
     }
 
 port_A = {

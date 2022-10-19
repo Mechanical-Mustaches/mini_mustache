@@ -79,7 +79,7 @@ class CEO:
 
     async def auto_check(self):
         for auto in self.autos:
-            auto['self'].check()
+            auto.check()
         await asyncio.sleep_ms(0)
 
     def run(self, robot):
@@ -87,6 +87,7 @@ class CEO:
         self.robot.robotInit()
         self.robot.disabledInit()
         self.find_outputs()
+        self.make_report()
         self.post('BOOT COMPLETE')
         loop = asyncio.get_event_loop()
         loop.create_task(self.loop())
@@ -114,19 +115,27 @@ class CEO:
         self.autos.append(archie)
         archie.run(playbook, start=False)
 
+    def run_auto(self, book):
+        book.append(lambda: self.change_state('disabled'))
+        self.change_state('auto', book)
+    
     def retire(self, target):
         print(f"I'm sorry {target} it is time to die!")
         for i in range(len(self.autos)):
             if self.autos[i].name == target:
                 self.autos.remove(i)
 
-    def change_state(self, state):
+
+    def change_state(self, state, *auto_book):
         print(f'changing state to {state}')
         if state == 'disabled':
             self.robot.disabledInit()
         elif state == 'auto':
             self.autos.clear()
-            self.robot.autonomousInit()
+            if not auto_book:
+                self.robot.autonomousInit()
+            else:
+                self.add_auto(auto_book[0])
         elif state == 'test':
             self.robot.testInit()
         elif state == 'teleop':

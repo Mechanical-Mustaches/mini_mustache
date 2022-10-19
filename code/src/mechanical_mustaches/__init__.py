@@ -57,6 +57,7 @@ def start_web_page():
 m.set_LCD(LCD(config.lcd['sda'], config.lcd['scl']))
 print(next(stache))
 if config.stache_station['enable']:
+    print('enabling ss')
     import uasyncio
     m.ss = StacheStation(**config.stache_station)
     loop = uasyncio.get_event_loop()
