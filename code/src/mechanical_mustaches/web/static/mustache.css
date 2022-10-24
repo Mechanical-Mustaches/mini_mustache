@@ -2,7 +2,8 @@
   --pink: #EEA2F4;
   --grey: #B6B6B6;
   --dark_pink: #DE24ED;
-  --bg_blue: #5391F8
+  --bg_blue: #5391F8;
+  --hd_background: #186bf5;
 }
 html{
   background-color: var(--bg_blue);
@@ -78,4 +79,9 @@ tr td{
   color: white;
   overflow: scroll;
   text-align: left;
+}
+.header{
+  background-color: var(--hd_background);
+  padding: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }

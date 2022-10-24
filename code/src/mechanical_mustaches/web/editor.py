@@ -1,7 +1,7 @@
 #
 # This is a picoweb example showing how to handle form data.
 #
-# import mechanical_mustaches
+import mechanical_mustaches as mm
 import mechanical_mustaches.web.picoweb as picoweb
 import gc
 import uos
@@ -48,6 +48,8 @@ def parse_dir(dir_name, f) -> dict:
             parse_dir(ext, file)
 
 def parse_dirs():
+    global files
+    files.clear()
     for f in uos.ilistdir():
         parse_dir('', f)
         
@@ -68,24 +70,24 @@ def index(req, resp):
     gc.collect()
     yield from picoweb.start_response(resp)
     yield from resp.awrite(f"""
-<!DOCTYPE html><html><head><style>{send_css()}</style></head><body><h1>Mo Edits!</h1><br>
+<!DOCTYPE html><html><head><style>{mm.send_file('mustache.css')}</style></head><body>
+{mm.send_file("header.html")}
+<h1>Mo Edits!</h1><br>
 <br><br>
 <strong>filename: {open_filename}</strong><form action="editor" method="POST" id="coder">
-<textarea class="textarea" name="code" autofocus="autofocus" cols=100 rows={open_file.count('\n') + 6} onfocus="var temp_value=this.value; this.value=''; this.value=temp_value">{open_file}</textarea>
+<textarea class="textarea" name="code" autofocus="autofocus" cols=100 rows={open_file.count('\n') + 6} onfocus="var temp_value=this.value; this.value=''; this.value=temp_value">""")
+    yield from resp.awrite(open_file)
+    yield from resp.awrite("""</textarea>
 <input type="submit" name="save" value="save"class="button pink_s" />
 </form>
 <br>
 <a href="/editor?button_reset"><button class="button pink">reset</button><br><br>
 """)
     for file in files:
-        yield from resp.awrite(f"{button(file, 'grey', 'editor')}<br>")
-        
-    yield from resp.awrite('<br><br><br><a href="/"><button class="button grey">home</button></a><br>{script()}</body></html>')
+        yield from resp.awrite(f"{button(file, 'grey', 'editor')}<br></body></html>")
     gc.collect()
 
-def send_css():
-    with open('/mechanical_mustaches/web/static/mustache.css', 'r') as f:
-        return f.read().replace('\r\n', '')
+
     
 
 def script():

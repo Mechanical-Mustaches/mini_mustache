@@ -1,12 +1,12 @@
 import mechanical_mustaches as mm
 from mechanical_mustaches import m
 import mechanical_mustaches.web.picoweb as picoweb
-import mechanical_mustaches.web.ulogging as logging
+# import mechanical_mustaches.web.ulogging as logging
 import json
 import esp32
 import uasyncio
 import sys
-
+import gc
 
 
 
@@ -16,10 +16,8 @@ g_imprtd = False
 user_buttons = {}
 page = ''
 
-def send_css():
-    with open('/mechanical_mustaches/web/static/mustache.css', 'r') as f:
-        return f.read().replace('\r\n', '')
 
+    
 def create_webpage():
     global page
     global user_buttons
@@ -32,10 +30,12 @@ def create_webpage():
         pass
     
     
-    # m.make_report()
-    page = ''.join([f"<html><head><title>Mo's Mayhem</title><style>{send_css()}</style>",
-"""
-</head><body><br>
+    page = ''.join([f"<html><head><title>Mo's Mayhem</title><style>{mm.send_file('mustache.css')}</style>",
+f"""
+</head><body>
+{mm.send_file("header.html")}
+
+<br>
 <h1>Mo's Stache'board<br></h1><h3>dashboard</h3><strong>
 <div>
 <table>
@@ -87,7 +87,9 @@ def process(form):
 
 # @site.route("/")
 def index(req, resp):
+    gc.collect()
     if not page:  # page should be created only after all agents and m have finished booting
+        
         create_webpage()
         
                 
@@ -107,7 +109,7 @@ def index(req, resp):
     else:
         for butt in user_buttons:
             yield from resp.awrite(button(butt, 'grey', 'stache'))
-    yield from resp.awrite('</p><br><a href="/"><button class="button pink">home</button></a></html>')
+    yield from resp.awrite('</p></html>')
     
 
 

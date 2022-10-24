@@ -1,7 +1,7 @@
 #
 # This is a picoweb example showing how to handle form data.
 #
-import mechanical_mustaches
+import mechanical_mustaches as mm
 import mechanical_mustaches.web.picoweb as picoweb
 import time
 import gc
@@ -98,9 +98,11 @@ def index(req, resp):
     process(req.form)
     gc.collect()
     yield from picoweb.start_response(resp)
-    yield from resp.awrite(f"""
-<!DOCTYPE html><html><head><style>{send_css()}</style></head><body>
-<h1>Mo's Repl</h1><br>
+    yield from resp.awrite("<!DOCTYPE html><html><head><style>")
+    yield from resp.awrite(mm.send_file("mustache.css"))
+    yield from resp.awrite('</style></head><body>')
+    yield from resp.awrite(mm.send_file("header.html"))
+    yield from resp.awrite("""<h1>Mo's Repl</h1><br>
 Terminal:<br>
 <div>
 <table>
@@ -116,11 +118,11 @@ Terminal:<br>
 </textarea>
 <input type='submit'></form><br>
 remember: python uses 4 spaces as indents, but 2 spaces will work here ;)<br>
-shift + enter for newline, enter will run code
+shift + enter for newline, enter will run code<br>
+PageUp/Down for history
 """)
 
-    yield from resp.awrite(
-        f'<br><br><br><a href="/home"><button class="button grey">home</button></a><br>{script()}</body></html>')
+    yield from resp.awrite(f'{script()}</body></html>')
     gc.collect()
 
 
@@ -158,9 +160,7 @@ def events(req, resp):
         yield from resp.aclose()
 
 
-def send_css():
-    with open('/mechanical_mustaches/web/static/mustache.css', 'r') as f:
-        return f.read()  # .replace('\r\n', '')
+
 
 
 def script():

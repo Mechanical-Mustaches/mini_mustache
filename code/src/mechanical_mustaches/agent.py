@@ -1,6 +1,6 @@
 import uasyncio as asyncio
 from collections import OrderedDict
-
+import gc
 
 from mechanical_mustaches.auto import Auto
 import mechanical_mustaches.motor
@@ -173,6 +173,7 @@ class CEO:
                 await self.robot.disabledPeriodic()
                 await self.robot.robotPeriodic()
             self.ss.check()
+            gc.collect()
             await asyncio.sleep_ms(20)
 
     # ------------------------------------------------------------------------

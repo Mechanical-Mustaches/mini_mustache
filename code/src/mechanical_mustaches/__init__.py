@@ -51,8 +51,9 @@ print(next(stache))
 
 def start_web_page():
     print('begin webpage')
+    m.ss.fill(10,0,4)
     import mechanical_mustaches.web.index
-
+    m.ss.fill(0,0,0)
 
 m.set_LCD(LCD(config.lcd['sda'], config.lcd['scl']))
 print(next(stache))
@@ -62,7 +63,10 @@ if config.stache_station['enable']:
     m.ss = StacheStation(**config.stache_station)
     loop = uasyncio.get_event_loop()
     loop.create_task(m.ss.hbt())
- 
+
+def send_file(file):
+    with open(f'/mechanical_mustaches/web/static/{file}', 'r') as f:
+        return f.read()
 
 my_ip = None
 
@@ -93,7 +97,8 @@ def wifi_connect(*args):
         id = list(machine.unique_id())
         ap_name = 'mustache-' + ''.join([letters[l % len(letters)] for l in id])
         print('creating access point')
-        m.post('ap: ' + ap_name)
+        m.post(ap_name)
+        m.post('ap name:')
         ap = network.WLAN(network.AP_IF) # create access-point interface
         utime.sleep_ms(100)
         ap.config(essid=ap_name) # set the SSID of the access point
