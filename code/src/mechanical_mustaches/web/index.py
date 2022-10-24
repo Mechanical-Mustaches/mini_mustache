@@ -19,6 +19,7 @@ errors = ''
 
 
 @site.route("/")
+@site.route("/home")
 def index(req, resp):
     global errors_checked_for
     global errors

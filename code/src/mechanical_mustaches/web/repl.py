@@ -8,43 +8,45 @@ import gc
 import uasyncio
 import json
 
-
-
 the_runs = ''
 the_input = ''
 g_imprtd = False
 the_output = ''
+
 
 def process(form):
     global the_runs
     global the_input
     global g_imprtd
     the_input = ''
-    if 'clear' in form: # button press
+    if 'clear' in form:  # button press
         the_runs = ''
-    
-    if 'code' not in form: # initial pageload probably
+
+    if 'code' not in form:  # initial pageload probably
         return
-    
+
     code = form['code']
     try:
         _return = str(eval(code, globals(), locals())).strip('<>')
         the_runs += f">>> {code}\n{_return}\n"
-    
+        print('evaling')
+
     except SyntaxError:
         try:
             code = code.replace('\r', '')
             if not g_imprtd:
-                exec(compile('globals().update(locals())' , 'input', 'single'), globals(), locals())
+                exec(compile('globals().update(locals())', 'input', 'single'), globals(), locals())
                 g_imprtd = True
             # _code = compile(code , '<string>', 'single')
-            exec(compile(code , 'input', 'single'), globals(), locals())
+            print('execing')
+            exec(compile(code, 'input', 'single'), globals(), locals())
+            print(locals().keys())
             # exec(_code, globals(), locals())
-            the_runs +=  f">>> {code}\n"
+            the_runs += f">>> {code}\n"
         except Exception as e:
             the_runs += f">>> {code}\n{e}\n"
             the_input = code
-    
+
     except Exception as e:
         the_runs += f">>> {code}\n{e}\n"
         the_input = code
@@ -53,38 +55,37 @@ def process(form):
 def repl_it(form):
     global the_output
     global g_imprtd
-    
-    
+
     code = form['code']
     code = code.replace('```', '&')
     code = code.replace('``', '%')
     code = code.replace('`', '+')
-    
+
     # print('code', code)
     the_output = ''
     try:
         _return = str(eval(code, globals(), locals())).strip('<>')
         the_output += f">>> {code}\n{_return}\n"
-    
+
     except SyntaxError:
         try:
             code = code.replace('\r', '')
             if not g_imprtd:
-                exec(compile('globals().update(locals())' , 'input', 'single'), globals(), locals())
+                exec(compile('globals().update(locals())', 'input', 'single'), globals(), locals())
                 g_imprtd = True
             # _code = compile(code , '<string>', 'single')
-            exec(compile(code , 'input', 'single'), globals(), locals())
+            exec(compile(code, 'input', 'single'), globals(), locals())
+            exec(compile('globals().update(locals())', 'input', 'single'), globals(), locals())
             # exec(_code, globals(), locals())
-            the_output +=  f">>> {code}\n"
+            the_output += f">>> {code}\n"
         except Exception as e:
             the_output += f">>> {code}\n{e}\n"
 
-    
+
     except Exception as e:
         the_output += f">>> {code}\n{e}\n"
 
     # print(the_output)
-
 
 
 # @app.route("/")
@@ -98,7 +99,8 @@ def index(req, resp):
     gc.collect()
     yield from picoweb.start_response(resp)
     yield from resp.awrite(f"""
-<!DOCTYPE html><html><head><style>{send_css()}</style></head><body><h1>Mo's Repl</h1><br><form action='repl' method='POST'>
+<!DOCTYPE html><html><head><style>{send_css()}</style></head><body>
+<h1>Mo's Repl</h1><br>
 Terminal:<br>
 <div>
 <table>
@@ -109,15 +111,16 @@ Terminal:<br>
 </div>
 <br><br><br><br>
 
-<input: <form method="POST" id="coder">
+<form method="POST" id="coder">
 <textarea class="textarea" id='code' name="code" autofocus="autofocus" cols=40 rows=4 onfocus="var temp_value=this.value; this.value=''; this.value=temp_value">
 </textarea>
-</form><br>
+<input type='submit'></form><br>
 remember: python uses 4 spaces as indents, but 2 spaces will work here ;)<br>
 shift + enter for newline, enter will run code
 """)
 
-    yield from resp.awrite(f'<br><br><br><a href="/"><button class="button grey">home</button></a><br>{script()}</body></html>')
+    yield from resp.awrite(
+        f'<br><br><br><a href="/home"><button class="button grey">home</button></a><br>{script()}</body></html>')
     gc.collect()
 
 
@@ -131,8 +134,6 @@ def inputs(req, resp):
     repl_it(req.form)
     gc.collect()
     yield from resp.awrite("HTTP 200 OK")
-    
-
 
 
 def events(req, resp):
@@ -157,11 +158,10 @@ def events(req, resp):
         yield from resp.aclose()
 
 
-
 def send_css():
     with open('/mechanical_mustaches/web/static/mustache.css', 'r') as f:
-        return f.read() # .replace('\r\n', '')
-    
+        return f.read()  # .replace('\r\n', '')
+
 
 def script():
     return """
@@ -194,12 +194,12 @@ document.getElementById("coder").addEventListener('keydown', (event) => {
   console.log(event.key);
   var xhttp = new XMLHttpRequest();
   coder = document.getElementById("code")
-  if (event.key.toUpperCase() === "ARROWUP") {
+  if (event.key.toUpperCase() === "PAGEUP") {
                 console.log(this_history[0]);
             coder.value = this_history[index];
                 index += 1;
   }
-  else if (event.key.toUpperCase() === "ARROWDOWN") {
+  else if (event.key.toUpperCase() === "PAGEDOWN") {
                 console.log(this_history[0]);
             coder.value = this_history[index];
                 index -= 1;
@@ -248,10 +248,6 @@ window.addEventListener("load", init, false);
 """
 
 
-
-
-
-
 ROUTES = [
     ("/", index),
     ("/events", events),
@@ -259,5 +255,6 @@ ROUTES = [
 ]
 
 app = picoweb.WebApp(__name__, ROUTES)
+
 
 

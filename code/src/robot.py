@@ -1,6 +1,6 @@
 import mechanical_mustaches as mm
 from mechanical_mustaches import m
-from machine import Pin, ADC
+# from machine import Pin, ADC
 from agents import wheels, neo
 import config
 import uasyncio as asyncio
@@ -63,12 +63,11 @@ class Robot:
     
     
     async def testPeriodic(self):
-        await m.test()
+        await m.testPeriodic()
 
         
     
     def teleopInit(self):
-       
         pass
     
     
@@ -82,9 +81,8 @@ class Robot:
     
     
     async def disabledPeriodic(self):
-#         pass
         nemo.check()
-
+#         pass
         
 
 

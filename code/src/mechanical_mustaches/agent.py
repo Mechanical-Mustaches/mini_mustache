@@ -24,12 +24,29 @@ class Agent:
     def __str__(self):
         return f"nice to meet you comrade I am {self.name}, I am a {self.__class__.__name__}"
 
+    # ------------------------------------------------------------------------
+
     def check(self):
         pass
-        # print(f'{self.name} is working')
 
-    def test(self):
+    def testPeriodic(self):
         pass
+
+    # ------------------------------------------------------------------------
+
+    def disabledInit(self):
+        pass
+
+    def teleopInit(self):
+        pass
+
+    def autonomousInit(self):
+        pass
+
+    def testInit(self):
+        pass
+
+    # ------------------------------------------------------------------------
 
     def report(self):
         return self.state
@@ -45,6 +62,7 @@ class Agent:
     def __repr__(self):
         return f'OG_{self.name}'
 
+    # ------------------------------------------------------------------------
 
 class CEO:
     def __init__(self, name):
@@ -53,7 +71,7 @@ class CEO:
         self.state = 'disabled'  # auto, test, disabled
         self.autos = []
         self.the_report = []
-        self.ss = FakeStation  # stache station
+        self.ss = FakeStation  # create fake until real is injected
 
     def talk(self):
         print(f'hello i am {self.name.upper()} nice to meet you {self.agents}')
@@ -61,37 +79,84 @@ class CEO:
     def add_agent(self, name: str, agent: Agent):
         outputs = (mechanical_mustaches.motor.Motor)
         self.agents.update({name: {'self': agent, 'outputs': {}}})
-        # for out, value in agent.__dict__.items():  # (name, value) = (k, v) --> (key, value)
-        #         print(out, value)
-        #         if isinstance(value, outputs):
-        #             print(f"found name:{out} and value:{value}")
-        #             self.agents[name]['outputs'][name] = value
+
+    def find_outputs(self):
+        outputs = (mechanical_mustaches.motor.Motor)
+        for name, agent in self.agents.items():
+            this_agent = agent["self"]
+            for this_name, value in this_agent.__dict__.items():  # (name, value) = (k, v) --> (key, value)
+                # print(this_name, value)
+                if isinstance(value, outputs):
+                    # print(f"found name:{this_name} and value:{value}")
+                    self.agents[this_agent.name]['outputs'][this_name] = value
+
+    def make_report(self):
+        for name, agent in self.agents.items():
+            self.the_report.append([f'{name}_state', agent['self']])
+            for o_name, output in agent['outputs'].items():
+                self.the_report.append([f'{name}_{o_name}_state', output])
+
+    def report(self):
+        return {k: v.report() for k, v in self.the_report}
+
+    def set_LCD(self, lcd):
+        self.lcd = lcd
+
+    def post(self, the_post: str):
+        self.lcd.print(the_post)
+        print(the_post)
+
+    # ------------------------------------------------------------------------
 
     async def check(self):  # This is the teleopPeriodic function
         for agent in self.agents.values():
             agent['self'].check()
             await asyncio.sleep_ms(0)
 
-    async def test(self):
+    async def testPeriodic(self):
         for agent in self.agents.values():
-            agent['self'].test()
+            agent['self'].testPeriodic()
             await asyncio.sleep_ms(0)
+
+    # ------------------------------------------------------------------------
+
+    def testInit(self):
+        print('TESTINGGGGG', self.agents.values())
+        for agent in self.agents.values():
+            agent['self'].testInit()
+            
+    def disabledInit(self):
+        for agent in self.agents.values():
+            agent['self'].testInit()
+            
+            
+    def teleopInit(self):
+        for agent in self.agents.values():
+            agent['self'].testInit()
+
+    # ------------------------------------------------------------------------
 
     async def auto_check(self):
         for auto in self.autos:
             auto.check()
         await asyncio.sleep_ms(0)
 
-    def run(self, robot):
-        self.robot = robot
-        self.robot.robotInit()
-        self.robot.disabledInit()
-        self.find_outputs()
-        self.make_report()
-        self.post('BOOT COMPLETE')
-        loop = asyncio.get_event_loop()
-        loop.create_task(self.loop())
-        loop.run_forever()
+    def add_auto(self, playbook: list, **kwargs):
+        archie = Auto(**kwargs)
+        self.autos.append(archie)
+        archie.run(playbook, start=False)
+
+    def run_auto(self, book):
+        book.append(lambda: self.change_state('disabled'))
+        self.change_state('auto', book)
+
+    def retire(self, target):
+        print(f"I'm sorry {target} it is time to die!")
+        for i in range(len(self.autos)):
+            if self.autos[i].name == target:
+                self.autos.remove(i)
+
+    # ------------------------------------------------------------------------
 
     async def loop(self):
         while True:
@@ -110,26 +175,13 @@ class CEO:
             self.ss.check()
             await asyncio.sleep_ms(20)
 
-    def add_auto(self, playbook: list, **kwargs):
-        archie = Auto(**kwargs)
-        self.autos.append(archie)
-        archie.run(playbook, start=False)
-
-    def run_auto(self, book):
-        book.append(lambda: self.change_state('disabled'))
-        self.change_state('auto', book)
-    
-    def retire(self, target):
-        print(f"I'm sorry {target} it is time to die!")
-        for i in range(len(self.autos)):
-            if self.autos[i].name == target:
-                self.autos.remove(i)
-
+    # ------------------------------------------------------------------------
 
     def change_state(self, state, *auto_book):
         print(f'changing state to {state}')
         if state == 'disabled':
             self.robot.disabledInit()
+            self.disabledInit()
         elif state == 'auto':
             self.autos.clear()
             if not auto_book:
@@ -138,40 +190,29 @@ class CEO:
                 self.add_auto(auto_book[0])
         elif state == 'test':
             self.robot.testInit()
+            self.testInit()
         elif state == 'teleop':
             self.robot.teleopInit()
+            self.teleopInit()
 
         self.state = state
 
-    def make_report(self):
-        for name, agent in self.agents.items():
-            self.the_report.append([f'{name}_state', agent['self']])
-            for o_name, output in agent['outputs'].items():
-                self.the_report.append([f'{name}_{o_name}_state', output])
+    # ------------------------------------------------------------------------
 
-    def report(self):
-        return {k:v.report() for k,v in self.the_report}
+    def run(self, robot):
+        self.robot = robot
+        self.robot.robotInit()
+        self.robot.disabledInit()
+        self.find_outputs()
+        self.make_report()
+        self.post('BOOT COMPLETE')
+        loop = asyncio.get_event_loop()
+        loop.create_task(self.loop())
+        loop.run_forever()
 
-    def find_outputs(self):
-        outputs = (mechanical_mustaches.motor.Motor)
-        for name, agent in self.agents.items():
-            this_agent = agent["self"]
-            for this_name, value in this_agent.__dict__.items():  # (name, value) = (k, v) --> (key, value)
-                # print(this_name, value)
-                if isinstance(value, outputs):
-                    # print(f"found name:{this_name} and value:{value}")
-                    self.agents[this_agent.name]['outputs'][this_name] = value
-                    
-    def set_LCD(self, lcd):
-        self.lcd = lcd
-    
-    def post(self, the_post: str):
-        self.lcd.print(the_post)
-        print(the_post)
+    # ------------------------------------------------------------------------
 
 
 m = CEO('m')
 
-if __name__ == '__main__':
-    print('agent')
 
