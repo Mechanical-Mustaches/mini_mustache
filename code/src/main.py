@@ -10,17 +10,18 @@ mm.start_web_page()
 # webrepl.start()
 
 
+
+
 import sys
 
 try:
     from robot import *
-    # config.ss.fill(0,0,0)
     m.run(Robot())
 except Exception as e:
     sys.print_exception(e)
     with open('/mechanical_mustaches/web/errors.log', 'w') as f:
         sys.print_exception(e, f)
-    # config.ss.fill(5,0,0)
+    m.ss.fill(5,0,0)
     m.post("BOOT COMPLETE")
     m.post("WITH ERRORS")
     import uasyncio

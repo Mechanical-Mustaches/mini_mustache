@@ -1,13 +1,16 @@
 import mechanical_mustaches as mm
 from mechanical_mustaches import m
 # from machine import Pin, ADC
-from agents import wheels, neo
+from agents import wheels, neo, joypad
 import config
 import uasyncio as asyncio
 
+
+driver = joypad.Joypad('jerry')
+
 timmy = mm.Timer()
 # archie = mm.Auto()
-wally = wheels.Wheels(**config.wally)
+wally = wheels.Wheels(driver, **config.wally)
 nemo = neo.Neo(name='nemo', pin=15, num_pix=5)
 lefty = mm.Servo(pin=config.port_A['C'], name='lefty')
 righty = mm.Servo(pin=config.port_A['D'], name='righty')
@@ -35,10 +38,11 @@ wiggles = [
     ]
 
 
+
+
 class Robot:
     def __init__(self):
         pass
-    
     
     def autonomousInit(self):
         # m.add_auto(wiggles, name='mr_wiggles')
@@ -63,9 +67,7 @@ class Robot:
     
     
     async def testPeriodic(self):
-        await m.testPeriodic()
-
-        
+        pass
     
     def teleopInit(self):
         pass
@@ -81,6 +83,7 @@ class Robot:
     
     
     async def disabledPeriodic(self):
+        await m.disabledPeriodic() 
         nemo.check()
 #         pass
         

@@ -3,13 +3,14 @@ import mechanical_mustaches as mm
 
 
 class Wheels(mm.Agent):
-    def __init__(self, name: str, louie: dict , roger: dict):
+    def __init__(self, driver, name: str, louie: dict , roger: dict):
         super().__init__(name)
         self.name = name
         self.louie = mm.Motor(**louie)
         self.roger = mm.Motor(**roger)
         self.state = 'sleeping'
         print("{} has rolledddddddd on in".format(self.name))
+        self.driver = driver
 
     def tankdrive(self, left, right):
         
@@ -22,7 +23,7 @@ class Wheels(mm.Agent):
         self.roger.set(0)
         
     def check(self):
-        pass
+        self.tankdrive(self.driver.get_axis('LY'), self.driver.get_axis('RY'))
     
     
     def drive(self, speed: float, turn: float):

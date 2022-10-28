@@ -28,8 +28,8 @@ class Agent:
 
     def check(self):
         pass
-
-    def testPeriodic(self):
+    
+    def disabledPeriodic(self):
         pass
 
     # ------------------------------------------------------------------------
@@ -113,9 +113,9 @@ class CEO:
             agent['self'].check()
             await asyncio.sleep_ms(0)
 
-    async def testPeriodic(self):
+    async def disabledPeriodic(self):
         for agent in self.agents.values():
-            agent['self'].testPeriodic()
+            agent['self'].disabledPeriodic()
             await asyncio.sleep_ms(0)
 
     # ------------------------------------------------------------------------
