@@ -1,5 +1,5 @@
 #put your wifi passwords here
 
-cfg = ('SSID', 'password!')
+cfg = ('SSID', 'password')
 
 

@@ -1,4 +1,4 @@
-#put your wifi passwords here
+#put your wifi passwords here 
 
 cfg = ('SSID', 'password')
 

@@ -8,3 +8,5 @@ cad-source-files/accessory-boards/battery/Battery_holder/\#auto_saved_files\#
 .idea/inspectionProfiles/Project_Default.xml
 .idea/inspectionProfiles/profiles_settings.xml
 .idea/workspace.xml
+code/src/wifi_cfg.py
+code/joypad/wifi_cfg.py
