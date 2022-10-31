@@ -101,7 +101,11 @@ def wifi_connect(*args):
         m.post('ap name:')
         ap = network.WLAN(network.AP_IF) # create access-point interface
         utime.sleep_ms(100)
-        ap.config(essid=ap_name) # set the SSID of the access point
+        try:
+            ap.config(essid=ap_name) # set the SSID of the access point
+        except OSError:
+            import machine
+            machine.reset()
         utime.sleep_ms(100)
         ap.active(True)         # activate the interface
         my_ip = ap.ifconfig()[0]

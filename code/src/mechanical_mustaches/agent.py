@@ -28,8 +28,8 @@ class Agent:
 
     def check(self):
         pass
-
-    def testPeriodic(self):
+    
+    def disabledPeriodic(self):
         pass
 
     # ------------------------------------------------------------------------
@@ -52,8 +52,10 @@ class Agent:
         return self.state
 
     def __call__(self, *args, **kwargs):
-        if args:
-            return f"you want an argument? I'll tell you where you can stick your {args}"
+        if args and kwargs:
+            return f"hurray for both!! args:{args}, kwargs{kwargs}"
+        elif args:
+            return f"you want an argument? {args}"
         elif kwargs:
             return f"I love kwargs <3, thank you for the {kwargs}"
         else:
@@ -63,6 +65,7 @@ class Agent:
         return f'OG_{self.name}'
 
     # ------------------------------------------------------------------------
+
 
 class CEO:
     def __init__(self, name):
@@ -77,7 +80,6 @@ class CEO:
         print(f'hello i am {self.name.upper()} nice to meet you {self.agents}')
 
     def add_agent(self, name: str, agent: Agent):
-        outputs = (mechanical_mustaches.motor.Motor)
         self.agents.update({name: {'self': agent, 'outputs': {}}})
 
     def find_outputs(self):
@@ -113,9 +115,9 @@ class CEO:
             agent['self'].check()
             await asyncio.sleep_ms(0)
 
-    async def testPeriodic(self):
+    async def disabledPeriodic(self):
         for agent in self.agents.values():
-            agent['self'].testPeriodic()
+            agent['self'].disabledPeriodic()
             await asyncio.sleep_ms(0)
 
     # ------------------------------------------------------------------------
@@ -152,9 +154,9 @@ class CEO:
 
     def retire(self, target):
         print(f"I'm sorry {target} it is time to die!")
-        for i in range(len(self.autos)):
-            if self.autos[i].name == target:
-                self.autos.remove(i)
+        for auto in self.autos:
+            if auto.name == target:
+                auto.retired = True
 
     # ------------------------------------------------------------------------
 

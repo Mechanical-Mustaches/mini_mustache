@@ -10,10 +10,9 @@ from robot import *
 print('IMPORTING STACHEBOARD')
 
 buttons = {
-    'test1': lambda: print('test1'),
-    'test2': lambda: print('test2'),
     'nemo.sleep()': lambda: nemo.sleep(),
     'nemo.rainbow()': lambda: nemo.rainbow(),
     'nemo.scroll()': lambda: nemo.scroll(),
     'nemo.knightride()': lambda: nemo.knightride(),
+    'stache.twister()': lambda: stache.twister()
 }

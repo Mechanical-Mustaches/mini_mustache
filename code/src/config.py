@@ -32,6 +32,25 @@ stache_station = {
     'enable': True
     }
 
+
+
+mustache = {
+    'name': 'mustache',
+    'l_pin': 19,
+    'r_pin': 21,
+    }
+
+# mustache = {
+#     'name': 'mustache',
+#     'l_pin': 19,
+#     'l_min': 200,
+#     'l_max': 520,
+#     'r_pin': 21,
+#     'r_min': 200,
+#     'r_max': 520
+#     }
+
+
 port_A = {
     'A' : 23,
     'B': 22,

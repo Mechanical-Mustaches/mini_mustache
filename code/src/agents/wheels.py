@@ -10,6 +10,7 @@ class Wheels(mm.Agent):
         self.roger = mm.Motor(**roger)
         self.state = 'sleeping'
         print("{} has rolledddddddd on in".format(self.name))
+        # self.driver = driver
 
     def tankdrive(self, left, right):
         
@@ -21,8 +22,8 @@ class Wheels(mm.Agent):
         self.louie.set(0)
         self.roger.set(0)
         
-    def check(self):
-        pass
+#     def check(self):
+#         self.tankdrive(self.driver.get_axis('LY'), self.driver.get_axis('RY'))
     
     
     def drive(self, speed: float, turn: float):

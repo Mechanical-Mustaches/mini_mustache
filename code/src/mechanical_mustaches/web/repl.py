@@ -15,48 +15,24 @@ the_output = ''
 
 
 def process(form):
-    global the_runs
-    global the_input
-    global g_imprtd
-    the_input = ''
-    if 'clear' in form:  # button press
-        the_runs = ''
-
-    if 'code' not in form:  # initial pageload probably
-        return
-
-    code = form['code']
-    try:
-        _return = str(eval(code, globals(), locals())).strip('<>')
-        the_runs += f">>> {code}\n{_return}\n"
-        print('evaling')
-
-    except SyntaxError:
-        try:
-            code = code.replace('\r', '')
-            if not g_imprtd:
-                exec(compile('globals().update(locals())', 'input', 'single'), globals(), locals())
-                g_imprtd = True
-            # _code = compile(code , '<string>', 'single')
-            print('execing')
-            exec(compile(code, 'input', 'single'), globals(), locals())
-            print(locals().keys())
-            # exec(_code, globals(), locals())
-            the_runs += f">>> {code}\n"
-        except Exception as e:
-            the_runs += f">>> {code}\n{e}\n"
-            the_input = code
-
-    except Exception as e:
-        the_runs += f">>> {code}\n{e}\n"
-        the_input = code
+    if 'a_name' in form:
+        a_name = form['a_name'] + ' = [\n'
+        a_list = form['a_list'].split('\n')
+        lam_list = '\n'.join([f'lambda: {line.strip(',')},' for line in a_list])
+        lam_list = lam_list.strip(',')
+        out = f'{a_name}{lam_list}\n]'
+        return out
+        
 
 
 def repl_it(form):
     global the_output
     global g_imprtd
-
-    code = form['code']
+    print(form)
+    if 'a_name' in form:
+        code = process(form)
+    else:
+        code = form['code']
     code = code.replace('```', '&')
     code = code.replace('``', '%')
     code = code.replace('`', '+')
@@ -94,7 +70,7 @@ def index(req, resp):
         yield from req.read_form_data()
     else:  # GET, apparently
         req.parse_qs()
-    # print(req.form)
+    print(req.form)
     process(req.form)
     gc.collect()
     yield from picoweb.start_response(resp)
@@ -120,6 +96,13 @@ Terminal:<br>
 remember: python uses 4 spaces as indents, but 2 spaces will work here ;)<br>
 shift + enter for newline, enter will run code<br>
 PageUp/Down for history
+<br><br>
+<form method="POST" id="auto_maker">
+<label for="a_name">auto name:</label><br>
+<input type="text" id="a_name" name="a_name"><br>
+<label for="a_list">auto list:</label>
+<textarea class="textarea" id='a_list' name="a_list" cols=40 rows=4></textarea>
+<input type='submit'></form>
 """)
 
     yield from resp.awrite(f'{script()}</body></html>')
@@ -132,7 +115,7 @@ def inputs(req, resp):
         yield from req.read_form_data()
     else:  # GET, apparently
         req.parse_qs()
-    # print('form', req.form)
+    print('form', req.form)
     repl_it(req.form)
     gc.collect()
     yield from resp.awrite("HTTP 200 OK")
@@ -167,10 +150,9 @@ def script():
     return """
 <script type="text/javascript">
 
-
-
 function init(){
   this_history = [];
+  auto_history = [];
   var index = 0;
 }
 
@@ -229,6 +211,50 @@ document.getElementById("coder").addEventListener('keyup', (event) => {
   console.log(event.key);
   if (event.key == "Enter"  && !event.shiftKey){
     document.getElementById("code").value = "";
+  }
+}, false);
+
+
+document.getElementById("auto_maker").addEventListener('keydown', (event) => {
+  console.log(event.key);
+  var xhttp = new XMLHttpRequest();
+  auto_maker = document.getElementById("a_list")
+  if (event.key.toUpperCase() === "PAGEUP") {
+                console.log(this_history[0]);
+            auto_maker.value = auto_history[index];
+                index += 1;
+  }
+  else if (event.key.toUpperCase() === "PAGEDOWN") {
+                console.log(auto_history[0]);
+            auto_maker.value = auto_history[index];
+                index -= 1;
+  }
+
+  else if (event.key == "Enter"  && !event.shiftKey) {
+    data = auto_maker.value;
+    // writeLineToChat(data)
+    auto_history.unshift(data)
+    auto_maker.value = "";
+    console.log(data);
+    index = 0;
+    xhttp.open("POST", "repl/input", false);
+    const the_export = new Object();
+    data = data.replace('+', '`')
+    data = data.replace('%', '``')
+    data = data.replace('&', '```')
+    the_export.code = data;
+    var jsonExport= JSON.stringify(the_export);
+    console.log(jsonExport)
+    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhttp.send("a_list=" + data + '&a_name=' + a_name.value);
+    document.getElementById("a_name").value = "";
+  }
+}, false);
+
+document.getElementById("auto_maker").addEventListener('keyup', (event) => {
+  console.log(event.key);
+  if (event.key == "Enter"  && !event.shiftKey){
+    document.getElementById("auto_maker").value = "";
   }
 }, false);
 
