@@ -2,7 +2,7 @@ import mechanical_mustaches as mm
 import struct
 import uasyncio
 import config
-
+import wifi_cfg
 
 mm.wifi_connect('mustache-RadYSz')
 
