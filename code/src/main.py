@@ -2,12 +2,13 @@ import mechanical_mustaches as mm
 from mechanical_mustaches import m
 
 
-
+import wifi_cfg
 mm.wifi_connect()
 
 
 mm.start_web_page()
 # webrepl.start()
+
 
 
 

@@ -16,13 +16,9 @@ class Auto:
         self.mode = mode  # 'single_shot' or 'auto',
         self.timer = Timer()
         self.loop = loop
-        self.retired = False
 
 
     def check(self):
-        if retired: # was target and is now dead. Wait for garbage collector
-            return
-        
         returned = self.book[self.bookmark]()
         # if self.book[self.bookmark]() is False:
         if self.mode == 'auto':
@@ -40,6 +36,7 @@ class Auto:
                     self.running = False
                     print('finished book')
             return None
+        
         elif self.mode == 'single_shot':  # must be single shot
             self.bookmark += 1
             if self.bookmark > len(self.book) and self.loop:
@@ -48,7 +45,6 @@ class Auto:
         
 
     def run(self, new_book: list[any], start=True, loop=False, **kwargs):
-        self.rerired = False
         self.book = new_book
         self.bookmark = 0
         self.running = True
@@ -56,3 +52,4 @@ class Auto:
         if not start:
             return
         self.check()
+
