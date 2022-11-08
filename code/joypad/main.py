@@ -2,9 +2,10 @@ import mechanical_mustaches as mm
 import struct
 import uasyncio
 import config
+import wifi_cfg
 
 
-mm.wifi_connect('mustache-RadYSz')
+mm.wifi_connect(*wifi_cfg.cfg)
 
 print('I am jerry')
 
@@ -35,9 +36,9 @@ def print_alog(alog):
 
 
 # set up hardware
-buts = [mm.Button_CB(name, pin, True, print_but) for name, pin in config.buttons]
+buts = [mm.Button_CB(name, pin, True, print_but) for name, pin in config.ebuttons]
     
-alogs = [mm.Joystick_CB(name, pin, print_alog) for name, pin in config.alogs]
+alogs = [mm.Joystick_CB(name, pin, print_alog) for name, pin in config.ealogs]
 
 func = mm.Button_CB('func', 36, False, print_but)
 

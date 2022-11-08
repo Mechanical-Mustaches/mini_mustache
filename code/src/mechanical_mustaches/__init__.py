@@ -48,6 +48,22 @@ print(next(stache))
 from mechanical_mustaches.stache_station import StacheStation
 print(next(stache))
 
+def boot(initial_state='disabled'):
+    import sys
+    try:
+        from robot import Robot
+        m.run(Robot(), initial_state)
+    except Exception as e:
+        sys.print_exception(e)
+        with open('/mechanical_mustaches/web/errors.log', 'w') as f:
+            sys.print_exception(e, f)
+        m.ss.fill(5,0,0)
+        m.post("BOOT COMPLETE")
+        m.post("WITH ERRORS")
+        import uasyncio
+        loop = uasyncio.get_event_loop()
+        loop.run_forever()
+
 
 def start_web_page():
     print('begin webpage')
@@ -92,10 +108,12 @@ def wifi_connect(*args):
         print('.')
         my_ip = wlan.ifconfig()[0]
     else:
+        import random
+        random.seed(8122)
         m.ss.fill(0,4,0)
-        letters = "ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789"
+        letters = "ACDEFGHIJKLMNPQRSTWXYZabcdefghjkmnpqrstxyz2345679"
         id = list(machine.unique_id())
-        ap_name = 'mustache-' + ''.join([letters[l % len(letters)] for l in id])
+        ap_name = 'mustache-' + ''.join([letters[(l*random.randint(0,8122)) % len(letters)] for l in id])
         print('creating access point')
         m.post(ap_name)
         m.post('ap name:')

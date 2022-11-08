@@ -19,3 +19,26 @@ alogs = (
     ('RX', 34),
     ('RY', 39)
     )
+
+ebuttons = (
+    ('red', 33),
+    ('blue', 27),
+    ('yellow', 26),
+    ('green', 25),
+    ('start', 13),
+    ('select', 15),
+    ('up', 21),
+    ('down', 23),
+    ('left', 19),
+    ('right', 22),
+    ('l_push', 18),
+    ('r_push', 14)    
+    )
+
+ealogs = (
+    ('LX', 35),
+    ('LY', 32),
+    ('RX', 34),
+    ('RY', 39)
+    )
+

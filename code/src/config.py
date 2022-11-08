@@ -36,8 +36,8 @@ stache_station = {
 
 mustache = {
     'name': 'mustache',
-    'l_pin': 19,
-    'r_pin': 21,
+    'l_pin': 18,
+    'r_pin': 5,
     }
 
 # mustache = {

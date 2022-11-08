@@ -20,7 +20,7 @@ class Auto:
 
 
     def check(self):
-        if retired: # was target and is now dead. Wait for garbage collector
+        if self.retired: # was target and is now dead. Wait for garbage collector
             return
         
         returned = self.book[self.bookmark]()
@@ -48,7 +48,7 @@ class Auto:
         
 
     def run(self, new_book: list[any], start=True, loop=False, **kwargs):
-        self.rerired = False
+        self.retired = False
         self.book = new_book
         self.bookmark = 0
         self.running = True

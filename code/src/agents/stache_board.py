@@ -14,5 +14,6 @@ buttons = {
     'nemo.rainbow()': lambda: nemo.rainbow(),
     'nemo.scroll()': lambda: nemo.scroll(),
     'nemo.knightride()': lambda: nemo.knightride(),
-    'stache.twister()': lambda: stache.twister()
+    'stache.twister()': lambda: stache.twister(),
+    'm.run_auto(twirl)': lambda: m.run_auto(twirl)
 }

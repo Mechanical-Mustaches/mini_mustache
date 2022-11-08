@@ -5,7 +5,7 @@ import gc
 from mechanical_mustaches.auto import Auto
 import mechanical_mustaches.motor
 from mechanical_mustaches.stache_station import FakeStation
-
+import utime
 
 
 class Agent:
@@ -162,6 +162,7 @@ class CEO:
 
     async def loop(self):
         while True:
+            start = utime.ticks_ms()
             if self.state == 'teleop':  # auto, test, disabled
                 await self.robot.teleopPeriodic()
                 await self.robot.robotPeriodic()
@@ -176,7 +177,13 @@ class CEO:
                 await self.robot.robotPeriodic()
             self.ss.check()
             gc.collect()
-            await asyncio.sleep_ms(20)
+            
+            # we want loop time to be ~20ms
+            dif = utime.ticks_diff(utime.ticks_ms(), start)
+            if dif < 20:
+                await asyncio.sleep_ms(20 - dif)
+            else:
+                await asyncio.sleep_ms(0)
 
     # ------------------------------------------------------------------------
 
@@ -185,16 +192,20 @@ class CEO:
         if state == 'disabled':
             self.robot.disabledInit()
             self.disabledInit()
+            self.post('disabled')
         elif state == 'auto':
+            self.post('auto')
             self.autos.clear()
             if not auto_book:
                 self.robot.autonomousInit()
             else:
                 self.add_auto(auto_book[0])
         elif state == 'test':
+            self.post('test')
             self.robot.testInit()
             self.testInit()
         elif state == 'teleop':
+            self.post('teleop')
             self.robot.teleopInit()
             self.teleopInit()
 
@@ -202,12 +213,12 @@ class CEO:
 
     # ------------------------------------------------------------------------
 
-    def run(self, robot):
+    def run(self, robot, initial_state='disabled'):
         self.robot = robot
         self.robot.robotInit()
-        self.robot.disabledInit()
         self.find_outputs()
         self.make_report()
+        self.change_state(initial_state)
         self.post('BOOT COMPLETE')
         loop = asyncio.get_event_loop()
         loop.create_task(self.loop())

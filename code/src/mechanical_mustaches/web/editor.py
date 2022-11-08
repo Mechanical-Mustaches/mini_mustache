@@ -11,19 +11,16 @@ import uasyncio
 app = picoweb.WebApp(__name__)
 
 # globals
-open_file = ''
 open_filename = ''
 files = []
 
 def process(form, resp):
     """process POST request"""
-    global open_file
     global open_filename
     for k, v in form.items():
         if k =='button_editor':
             open_filename = v
-            with open(v, 'r') as f:
-                open_file = f.read()
+
         elif k == 'button_reset':
             print('resetting Mo')
             machine.soft_reset()      
@@ -75,8 +72,9 @@ def index(req, resp):
 <h1>Mo Edits!</h1><br>
 <br><br>
 <strong>filename: {open_filename}</strong><form action="editor" method="POST" id="coder">
-<textarea class="textarea" name="code" autofocus="autofocus" cols=100 rows={open_file.count('\n') + 6} onfocus="var temp_value=this.value; this.value=''; this.value=temp_value">""")
-    yield from resp.awrite(open_file)
+<textarea class="textarea" name="code" autofocus="autofocus" cols=100 rows={100 if open_filename else 3} onfocus="var temp_value=this.value; this.value=''; this.value=temp_value">""")
+    yield from resp.awrite(get_file())
+    gc.collect()
     yield from resp.awrite("""</textarea>
 <input type="submit" name="save" value="save"class="button pink_s" />
 </form>
@@ -88,7 +86,12 @@ def index(req, resp):
     gc.collect()
 
 
-    
+def get_file():
+    gc.collect()
+    if not open_filename:
+        return ' '
+    with open(open_filename, 'r') as f:
+        return f.read()
 
 def script():
     return """<script>
