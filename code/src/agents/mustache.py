@@ -74,4 +74,4 @@ class Mustache(mm.Agent):
         
     def drivering(self):
         self.stachel.set(self.driver.read('LY'))
-        self.stacher.set(-self.driver.read('RY'))
+        self.stacher.set(-self.driver.read('LX'))

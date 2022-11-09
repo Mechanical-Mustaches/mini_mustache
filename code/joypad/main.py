@@ -5,7 +5,7 @@ import config
 import wifi_cfg
 
 
-mm.wifi_connect(*wifi_cfg.cfg)
+mm.wifi_connect('mustache-AqFnqa')
 
 print('I am jerry')
 
@@ -36,9 +36,8 @@ def print_alog(alog):
 
 
 # set up hardware
-buts = [mm.Button_CB(name, pin, True, print_but) for name, pin in config.ebuttons]
-    
-alogs = [mm.Joystick_CB(name, pin, print_alog) for name, pin in config.ealogs]
+buts = [mm.Button_CB(name, pin, True, print_but) for name, pin in config.buttons]    
+alogs = [mm.Joystick_CB(name, pin, print_alog) for name, pin in config.alogs]
 
 func = mm.Button_CB('func', 36, False, print_but)
 

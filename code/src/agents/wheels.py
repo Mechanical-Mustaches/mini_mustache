@@ -23,9 +23,9 @@ class Wheels(mm.Agent):
         self.roger.set(0)
         
     def check(self):
-        self.tankdrive(
+        self.drive(
             self.driver.read('LY', True),
-            self.driver.read('RY', True)
+            self.driver.read('LX', True)
             )
     
     
