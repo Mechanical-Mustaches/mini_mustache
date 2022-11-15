@@ -92,6 +92,7 @@ def wifi_connect(*args):
     import utime
     import machine
     import utime
+    import struct
     global my_ip
     if args:
         m.post('wifi: station mode')
@@ -101,7 +102,11 @@ def wifi_connect(*args):
         wlan.active(True)
         if not wlan.isconnected():
             print('connecting to network...')
-            wlan.connect(_ssid, password)
+            try:
+                wlan.connect(_ssid, password)
+            except OSError:
+                print('wifi state has changed, resetting')
+                machine.reset()
         while not wlan.isconnected():
             utime.sleep(.5)
             print('.', end='')
@@ -109,7 +114,7 @@ def wifi_connect(*args):
         my_ip = wlan.ifconfig()[0]
     else:
         import random
-        random.seed(8122)
+        random.seed(struct.unpack('Q',machine.unique_id() + b'\xba\x1f')[0]) # uuid + 8122
         m.ss.fill(0,4,0)
         letters = "ACDEFGHIJKLMNPQRSTWXYZabcdefghjkmnpqrstxyz2345679"
         id = list(machine.unique_id())
@@ -122,7 +127,7 @@ def wifi_connect(*args):
         try:
             ap.config(essid=ap_name) # set the SSID of the access point
         except OSError:
-            import machine
+            print('wifi state has changed, resetting')
             machine.reset()
         utime.sleep_ms(100)
         ap.active(True)         # activate the interface

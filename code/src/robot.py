@@ -147,7 +147,7 @@ class Robot:
                 m.run_auto(twirl)
             else:
                 wally.check()
-                stache.drivering()
+                stache.wiggle(-driver.read('RY'))
         
 #         pass
         
