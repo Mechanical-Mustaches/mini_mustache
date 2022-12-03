@@ -1,4 +1,4 @@
-20036146717419483
+19906106391190128
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -13,6 +13,13 @@ audio belton reverb
 0
 7
 7
+Battery
+16350_holder
+
+
+0
+2
+2
 Battery
 18650_holder
 
@@ -258,6 +265,13 @@ battery CR1225 coin cell
 0
 0
 0
+Battery
+Battery_Contact_CR2032_CoinCell
+
+
+0
+5
+2
 Battery
 Battery_Panasonic_CR1025-VSK_Vertical_CircularHoles
 Panasonic CR-1025/VSK battery
@@ -523,6 +537,13 @@ Matias/ALPS keyswitch, ISO Enter, http://matias.ca/switches/
 Matias ALPS keyswitch ISO enter
 0
 2
+2
+Button_Switch_SMD
+12mm_pushbutton
+
+
+0
+4
 2
 Button_Switch_SMD
 Nidec_Copal_SH-7010A
@@ -2106,6 +2127,13 @@ IP67 ultra-miniture horizontal
 0
 8
 6
+Button_Switch_THT
+SW_SLIDE_SS-12D10L9
+
+
+0
+3
+3
 Button_Switch_THT
 SW_Slide_1P2T_CK_OS102011MS2Q
 CuK miniature slide switch, OS series, SPDT, https://www.ckswitches.com/media/1428/os.pdf
@@ -13733,6 +13761,13 @@ SIM Card with Detect Switch
 0
 18
 9
+Connector_JST
+CONN_JST_XH_3_VERTICAL
+
+
+0
+5
+4
 Connector_JST
 CONN_JST_XH_4_VERTICAL
 
@@ -57750,6 +57785,13 @@ mounting hole 4.5mm
 9
 1
 MountingHole
+MountingHole_4.95mm_3_16in
+Mounting Hole 5.3mm, no annular, M5
+mounting hole 5.3mm no annular m5
+0
+0
+0
+MountingHole
 MountingHole_4mm
 Mounting Hole 4mm, no annular
 mounting hole 4mm no annular
@@ -74032,6 +74074,13 @@ Potentiometer vertical Vishay TS53YL
 3
 3
 Potentiometer_THT
+JOYSTICK
+
+
+0
+14
+5
+Potentiometer_THT
 Potentiometer_ACP_CA6-H2,5_Horizontal
 Potentiometer, horizontal, ACP CA6-H2,5, http://www.acptechnologies.com/wp-content/uploads/2017/06/01-ACP-CA6.pdf
 Potentiometer horizontal ACP CA6-H2,5
@@ -78036,6 +78085,13 @@ pressure sensor automotive honeywell
 3
 3
 Sensor_Pressure
+Pressure_Sensor_480-5834-ND
+
+
+0
+4
+4
+Sensor_Pressure
 TE_MS5525DSO-DBxxxyS
 Pressure Sensor, Dual-Barbed, https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=MS5525DSO&DocType=DS&DocLang=English
 Pressure DualBarbed
@@ -79191,6 +79247,13 @@ mussystache
 0
 0
 Symbol
+mustache circuity
+
+
+0
+0
+0
+Symbol
 mustache man
 
 
@@ -79205,6 +79268,48 @@ mustache man 2
 0
 0
 Symbol
+mustache name
+
+
+0
+0
+0
+Symbol
+mustache_gears
+
+
+0
+0
+0
+Symbol
+mustache_logo_16mm
+
+
+0
+0
+0
+Symbol
+mustache_logo_20mm
+
+
+0
+0
+0
+Symbol
+mustache_logo_25mm
+
+
+0
+0
+0
+Symbol
+mustache_pin
+
+
+0
+0
+0
+Symbol
 stache_station
 
 
@@ -79213,6 +79318,13 @@ stache_station
 0
 Symbol
 sticky person
+
+
+0
+0
+0
+Symbol
+test
 
 
 0
@@ -84692,3 +84804,38 @@ varistor SIOV
 0
 2
 2
+evezor_uncategorized
+DRV8825
+
+
+0
+16
+16
+evezor_uncategorized
+EVEZOR_LOGO_GEAR
+
+
+0
+0
+0
+evezor_uncategorized
+QR_READER_YJD600
+
+
+0
+0
+0
+evezor_uncategorized
+REGULATOR_VOLTAGE_811-2622-ND
+
+
+0
+5
+5
+evezor_uncategorized
+evezor_18
+
+
+0
+0
+0

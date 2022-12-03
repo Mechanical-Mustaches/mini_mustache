@@ -1,4 +1,4 @@
-20054484043988143
+19899267293436799
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -79268,6 +79268,13 @@ mustache_gears
 0
 0
 Symbol
+mustache_logo_16mm
+
+
+0
+0
+0
+Symbol
 mustache_pin
 
 
@@ -84769,3 +84776,38 @@ varistor SIOV
 0
 2
 2
+evezor_uncategorized
+DRV8825
+
+
+0
+16
+16
+evezor_uncategorized
+EVEZOR_LOGO_GEAR
+
+
+0
+0
+0
+evezor_uncategorized
+QR_READER_YJD600
+
+
+0
+0
+0
+evezor_uncategorized
+REGULATOR_VOLTAGE_811-2622-ND
+
+
+0
+5
+5
+evezor_uncategorized
+evezor_18
+
+
+0
+0
+0
