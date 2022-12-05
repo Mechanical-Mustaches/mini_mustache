@@ -7,12 +7,13 @@ import wifi_cfg
 # mm.wifi_connect(*wifi_cfg.cfg)  # comment to disable wifi    
 mm.wifi_connect()
 
-# mm.start_web_page()  # comment to disable webpage  
+mm.start_web_page()  # comment to disable webpage  
 
 # webrepl.start()  # comment to diable webrepl (this is NOT the repl page on the website)
 
-mm.boot(initial_state = 'disabled')
 from robot import *
+mm.boot(initial_state = 'disabled')
+
 
 
   #----------------------------------

@@ -64,7 +64,7 @@ class Mustache(mm.Agent):
     #-------------------------------------------------------------
         
     def twisting(self):
-        self.twist(self.driver.read('RX')/2)
+        self.twist(self.driver.read('RX'))
         
     def twister(self):
         self.state = 'twisting'
