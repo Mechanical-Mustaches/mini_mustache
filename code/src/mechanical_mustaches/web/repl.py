@@ -16,7 +16,8 @@ the_output = ''
 
 def process(form):
     if 'a_name' in form:
-        a_name = form['a_name'] + ' = [\n'
+        name = form['a_name'] if form['a_name'] else 'please_make_name'
+        a_name = name + ' = [\n'
         a_list = form['a_list'].split('\n')
         lam_list = '\n'.join([f'lambda: {line.strip(',')},' for line in a_list])
         lam_list = lam_list.strip(',')
@@ -92,17 +93,25 @@ Terminal:<br>
 <form method="POST" id="coder">
 <textarea class="textarea" id='code' name="code" autofocus="autofocus" cols=40 rows=4 onfocus="var temp_value=this.value; this.value=''; this.value=temp_value">
 </textarea>
-<input type='submit'></form><br>
+</form><br>
 remember: python uses 4 spaces as indents, but 2 spaces will work here ;)<br>
 shift + enter for newline, enter will run code<br>
 PageUp/Down for history
-<br><br>
+<br><br><hr>
+Mo's Auto Maker<br>
+add one function per line just like you type them above in the REPL<br>
+eg. wally.drive(.5, 0) # No commas needed
 <form method="POST" id="auto_maker">
-<label for="a_name">auto name:</label><br>
+<label for="a_name">list name:</label>
 <input type="text" id="a_name" name="a_name"><br>
-<label for="a_list">auto list:</label>
+<label for="a_list">functions list:</label>
 <textarea class="textarea" id='a_list' name="a_list" cols=40 rows=4></textarea>
-<input type='submit'></form>
+</form>
+<br>
+shift + enter for newline, enter will submit auto list
+PageUp/Down for history<br>
+there is a small bug still, please hit enter from 'function list' and not 'list name' 
+<br><br><br><br><br>
 """)
 
     yield from resp.awrite(f'{script()}</body></html>')
@@ -215,7 +224,7 @@ document.getElementById("coder").addEventListener('keyup', (event) => {
 }, false);
 
 
-document.getElementById("auto_maker").addEventListener('keydown', (event) => {
+document.getElementById("a_list").addEventListener('keydown', (event) => {
   console.log(event.key);
   var xhttp = new XMLHttpRequest();
   auto_maker = document.getElementById("a_list")
@@ -251,10 +260,10 @@ document.getElementById("auto_maker").addEventListener('keydown', (event) => {
   }
 }, false);
 
-document.getElementById("auto_maker").addEventListener('keyup', (event) => {
+document.getElementById("a_list").addEventListener('keyup', (event) => {
   console.log(event.key);
   if (event.key == "Enter"  && !event.shiftKey){
-    document.getElementById("auto_maker").value = "";
+    document.getElementById("a_list").value = "";
   }
 }, false);
 
