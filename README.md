@@ -1,5 +1,11 @@
 Temporary home for a browser based serial terminal can be found here https://anfroholic.github.io/stache-terminal/
 
+# Mo is live on Kickstarter!
+Find more here https://www.kickstarter.com/projects/1474681136/mo-the-most-magnificent-mustached-machine 
+
+
+![_VZR4113](https://user-images.githubusercontent.com/1464801/206099950-a95ab7c0-ad8f-4355-bd4e-86af1c7cdfc3.jpg)
+
 We are the Mechanical Mustaches
 FIRST® Robotics Team 8122
 
